@@ -5,6 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "./containers/HomeScreen";
+import RestaurantScreen from "./containers/RestaurantScreen";
+
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
@@ -14,7 +16,7 @@ import splasHappy from "./assets/splasHappy.png";
 // import {  } from '@expo/vector-icons';
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-import { StyleSheet, Image, ImageBackground } from "react-native";
+import { StyleSheet, Image, ImageBackground, TextInput } from "react-native";
 // import Restaurant from "./containers/Restaurant";
 
 const Tab = createBottomTabNavigator();
@@ -86,6 +88,7 @@ export default function App() {
                 >
                   {() => (
                     <Stack.Navigator>
+                      {/* peut mettre des options la */}
                       <Stack.Screen
                         name="Home"
                         options={{
@@ -100,21 +103,26 @@ export default function App() {
                           },
                         }}
                       >
-                        {() => <HomeScreen />}
+                        {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
 
                       <Stack.Screen name="Restaurant">
-                        {(props) => <RestaurantScreen {...props} />}
+                        {(props) => (
+                          <RestaurantScreen
+                            {...props}
+                            // navigation={navigation}
+                          />
+                        )}
                       </Stack.Screen>
 
-                      <Stack.Screen
+                      {/* <Stack.Screen
                         name="Profile"
                         options={{
                           title: "User Profile",
                         }}
                       >
                         {() => <ProfileScreen />}
-                      </Stack.Screen>
+                      </Stack.Screen> */}
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
