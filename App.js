@@ -12,6 +12,10 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 
+import { Dimensions } from "react-native";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
 import splasHappy from "./assets/splasHappy.png";
 // import {  } from '@expo/vector-icons';
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
@@ -92,15 +96,17 @@ export default function App() {
                       <Stack.Screen
                         name="Home"
                         options={{
+                          headerStyle: {
+                            backgroundColor: "purple",
+                            height: windowHeight * 0.1,
+                          },
                           headerTitleStyle: {
                             fontWeight: "bold",
                             alignSelf: "center",
                             color: "white",
+                            fontSize: windowHeight * 0.026,
                           },
                           title: "HappyCow",
-                          headerStyle: {
-                            backgroundColor: "purple",
-                          },
                         }}
                       >
                         {(props) => <HomeScreen {...props} />}
