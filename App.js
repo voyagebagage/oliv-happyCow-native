@@ -23,6 +23,9 @@ import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Image, ImageBackground, TextInput } from "react-native";
 // import Restaurant from "./containers/Restaurant";
 
+import colors from "./assets/colors";
+const { drawerGrey, lightGrey } = colors;
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -79,12 +82,19 @@ export default function App() {
                 tabBarOptions={{
                   activeTintColor: "purple",
                   inactiveTintColor: "gray",
+                  // tabStyle: "grey",
+                  tabStyle: {
+                    backgroundColor: drawerGrey,
+                  },
+                  style: { borderTopColor: "transparent" },
                 }}
+                // style
               >
                 <Tab.Screen
                   name="Explore"
                   options={{
                     tabBarLabel: "Explore",
+                    style: { borderTopColor: drawerGrey },
                     tabBarIcon: ({ color, size }) => (
                       <AntDesign name="search1" size={24} color={color} />
                     ),
@@ -95,18 +105,27 @@ export default function App() {
                       {/* peut mettre des options la */}
                       <Stack.Screen
                         name="Home"
+                        // noShadow={true}
+                        // hasTabs={true}
+
                         options={{
                           headerStyle: {
-                            backgroundColor: "purple",
-                            height: windowHeight * 0.1,
+                            // shadowColor: "transparent",
+                            // shadowOpacity: 0,
+                            // elevation: 0,
+                            // height: windowHeight * 0.09,
+                            // backgroundColor: "transparent",
+                            // borderBottomWidth: 0,
+                            // flexDirection: "row",
                           },
-                          headerTitleStyle: {
-                            fontWeight: "bold",
-                            alignSelf: "center",
-                            color: "white",
-                            fontSize: windowHeight * 0.026,
-                          },
-                          title: "HappyCow",
+
+                          // headerTitleStyle: {
+                          //   fontWeight: "bold",
+                          //   alignSelf: "center",
+                          //   color: "purple",
+                          //   fontSize: windowHeight * 0.026,
+                          // },
+                          title: " ",
                         }}
                       >
                         {(props) => <HomeScreen {...props} />}
@@ -162,6 +181,10 @@ export default function App() {
   );
 }
 const styles = StyleSheet.create({
+  drawerGrey: {
+    backgroundColor: drawerGrey,
+  },
+  lightGrey: { backgroundColor: lightGrey },
   splash: {
     flex: 1,
   },
