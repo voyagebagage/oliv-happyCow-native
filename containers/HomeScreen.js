@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation, route }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(100);
   const [skip, setSkip] = useState(0);
   // const [searchResto, setSearchResto] = useState("");
 
@@ -56,12 +56,13 @@ export default function HomeScreen({ navigation, route }) {
         );
         setData(response.data);
         setIsLoading(false);
+        console.log(limit);
       } catch (e) {
         console.log(e);
       }
     };
     fetchData();
-  }, [search]);
+  }, [search, limit, skip]);
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
 
   // RECHERCHE
@@ -74,6 +75,9 @@ export default function HomeScreen({ navigation, route }) {
       return false;
     }
   };
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+
+  // const renderHeader = () => ();
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   const renderContent = () => (
     <View
@@ -159,15 +163,22 @@ export default function HomeScreen({ navigation, route }) {
       {Platform.OS === "ios" ? (
         <BottomSheet
           // ref={sheetRef}
+          // initialSnap={{}}
 
+          // enabledBottomInitialAnimation={true}
+          // initialSnap={["20%"]}
           snapPoints={["75%", "50%", "20%"]}
           // borderRadius={10}
           renderContent={renderContent}
+          // onOpenStart={() => sheetRef.current.initialSnap("20%")}
         />
       ) : (
         <BottomSheet
           // ref={sheetRef}
+          // initialSnap
+          // initialSnap={true}
           snapPoints={["80%", "55%", "20%"]}
+          // enabledBottomInitialAnimation={true}
           // borderRadius={10}
           renderContent={renderContent}
         />
@@ -243,16 +254,18 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.038,
     borderWidth: 1,
     borderColor: "white",
+    // boxSizing: "border-box",
   },
   inputStyle: {
     flex: 1,
+    borderWidth: 0,
     paddingHorizontal: windowWidth * 0.01,
     marginHorizontal: windowWidth * 0.015,
     fontSize: 17,
     color: "white",
     // height: windowHeight * 0.02,
     borderRadius: 5,
-    borderColor: "transparent",
+    // borderColor: "transparent",
     backgroundColor: "black",
   },
   leftIconContainerStyle: {
