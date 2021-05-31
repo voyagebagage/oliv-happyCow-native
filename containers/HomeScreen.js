@@ -35,7 +35,7 @@ import {
 import { SearchBar } from "react-native-elements";
 
 import colors from "../assets/colors";
-const { drawerGrey } = colors;
+const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
 export default function HomeScreen({ navigation, route }) {
   const [data, setData] = useState([]);
@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation, route }) {
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
-
+  // const [type, setType] = useState("vegan" || "vegetarian" || "veg-options");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -93,8 +93,17 @@ export default function HomeScreen({ navigation, route }) {
     }
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+  const toggleVegan = () => {
+    setToggleFilter("");
+    setToggleFilter("vegan");
+  };
+  const toggleVegetarian = () => {
+    setToggleFilter("vegetarian");
+  };
+  const toggleVegOptions = () => {
+    setToggleFilter("veg-options");
+  };
 
-  // const renderHeader = () => ();
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   const renderContent = () => (
     <View
@@ -110,14 +119,29 @@ export default function HomeScreen({ navigation, route }) {
           style={styles.scrollView}
           contentContainerStyle={styles.scrollViewContent}
         >
-          <TouchableOpacity style={styles.buttonFlatList}>
-            <Text style={styles.buttonText}>Vegan</Text>
+          <TouchableOpacity
+            style={styles.buttonFlatList}
+            onPress={
+              toggleFilter !== "" ? toggleVegan : setToggleFilter("vegan")
+            }
+          >
+            <Text style={styles.buttonColorGreen}>Vegan</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonFlatList}>
-            <Text style={styles.buttonText}>Vegetarian</Text>
+          <TouchableOpacity
+            style={styles.buttonFlatList}
+            onPress={
+              toggleFilter === "" ? toggleVegetarian : setToggleFilter("")
+            }
+          >
+            <Text style={styles.buttonColorPurple}>Vegetarian</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonFlatList}>
-            <Text style={styles.buttonText}>Veg-Option</Text>
+          <TouchableOpacity
+            style={styles.buttonFlatList}
+            onPress={
+              toggleFilter === "" ? toggleVegOptions : setToggleFilter("")
+            }
+          >
+            <Text style={styles.buttonColorRed}>Veg-Options</Text>
           </TouchableOpacity>
         </ScrollView>
         <FlatList
@@ -170,12 +194,11 @@ export default function HomeScreen({ navigation, route }) {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         // To center on an specific area :
-
         initialRegion={{
           latitude: 48.856614,
           longitude: 2.3522219,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
         }}
         // To show user's location :
         showsUserLocation={true}
@@ -221,13 +244,13 @@ export default function HomeScreen({ navigation, route }) {
         <BottomSheet
           // ref={sheetRef}
           // enabledBottomInitialAnimation={true}
-          snapPoints={["75%", "50%", "20%"]}
+          snapPoints={["50%", "20%", "75%"]}
           renderContent={renderContent}
         />
       ) : (
         <BottomSheet
           // ref={sheetRef}
-          snapPoints={["80%", "55%", "20%"]}
+          snapPoints={["55%", "20%", "80%"]}
           // enabledBottomInitialAnimation={true}
           renderContent={renderContent}
         />
@@ -241,6 +264,15 @@ const styles = StyleSheet.create({
   },
   drawerGrey: {
     backgroundColor: drawerGrey,
+  },
+  greenFltr: {
+    backgroundColor: greenFltr,
+  },
+  purpleFltr: {
+    backgroundColor: purpleFltr,
+  },
+  redFltr: {
+    backgroundColor: redFltr,
   },
   splash: {
     flex: 1,
@@ -284,13 +316,34 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.29,
     backgroundColor: drawerGrey,
     borderColor: "white",
-    borderWidth: 1,
+    borderWidth: 1.3,
     borderRadius: 20,
     justifyContent: "center",
+    shadowColor: "white",
   },
-  buttonText: {
+  // buttonText: {
+  //   alignSelf: "center",
+  //   color: "white",
+  //   fontWeight: "bold",
+  // },
+  buttonColorGreen: {
     alignSelf: "center",
     color: "white",
+    fontWeight: "bold",
+    color: greenFltr,
+    // borderWidth: 1,
+  },
+  buttonColorPurple: {
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold",
+    color: purpleFltr,
+  },
+  buttonColorRed: {
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold",
+    color: redFltr,
   },
   flatList: {
     height: windowHeight * 0.15,
