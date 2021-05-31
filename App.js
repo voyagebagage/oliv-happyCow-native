@@ -82,15 +82,15 @@ export default function App() {
                 tabBarOptions={{
                   activeTintColor: "purple",
                   inactiveTintColor: "gray",
-
                   // tabStyle: "grey",
                   tabStyle: {
                     borderTopColor: "transparent",
-                    // borderTopWidth: 0,
+                    borderTopWidth: 0,
+                    borderTransparent: true,
 
-                    // shadowColor: "transparent",
-                    // shadowOpacity: 0,
-                    // elevation: 0,
+                    shadowColor: "transparent",
+                    shadowOpacity: 0,
+                    elevation: 0,
                     backgroundColor: drawerGrey,
                   },
                   style: { borderTopColor: "transparent" },

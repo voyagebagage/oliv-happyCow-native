@@ -30,6 +30,7 @@ import {
   StyleSheet,
   TextInput,
   Platform,
+  ScrollView,
 } from "react-native";
 import { SearchBar } from "react-native-elements";
 
@@ -105,6 +106,20 @@ export default function HomeScreen({ navigation, route }) {
       }}
     >
       <View style={styles.container}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContent}
+        >
+          <TouchableOpacity style={styles.buttonFlatList}>
+            <Text style={styles.buttonText}>Vegan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonFlatList}>
+            <Text style={styles.buttonText}>Vegetarian</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonFlatList}>
+            <Text style={styles.buttonText}>Veg-Option</Text>
+          </TouchableOpacity>
+        </ScrollView>
         <FlatList
           data={data}
           keyExtractor={(item) => String(item.placeId)}
@@ -253,10 +268,35 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // margin: 10,
   },
+  scrollView: {
+    height: 40,
+  },
+  scrollViewContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 1,
+    // borderColor: "crimson",
+    // borderWidth: 1,
+  },
+  buttonFlatList: {
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.29,
+    backgroundColor: drawerGrey,
+    borderColor: "white",
+    borderWidth: 1,
+    borderRadius: 20,
+    justifyContent: "center",
+  },
+  buttonText: {
+    alignSelf: "center",
+    color: "white",
+  },
   flatList: {
     height: windowHeight * 0.15,
     borderBottomColor: "grey",
     borderBottomWidth: 2,
+
     // width: 100,
   },
   flatListText: {
@@ -278,10 +318,9 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: "transparent",
     flexDirection: "row",
-    // minWidth: 100,
     borderBottomColor: "transparent",
     borderTopColor: "transparent",
-    borderBottomWidth: 1,
+    //
     alignItems: "center",
     paddingBottom: 10,
     paddingVertical: windowHeight * 0.008,
@@ -291,20 +330,19 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     backgroundColor: "black",
     height: windowHeight * 0.038,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "white",
-    // boxSizing: "border-box",
+    borderRadius: 5,
   },
   inputStyle: {
-    flex: 1,
-    borderWidth: 0,
+    // flex: 1,
+    borderBottomColor: "white",
+    borderTopColor: "white",
     paddingHorizontal: windowWidth * 0.01,
     marginHorizontal: windowWidth * 0.015,
     fontSize: 17,
     color: "white",
-    // height: windowHeight * 0.02,
-    borderRadius: 5,
-    // borderColor: "transparent",
+    minHeight: windowHeight * 0.035,
     backgroundColor: "black",
   },
   leftIconContainerStyle: {
