@@ -82,8 +82,15 @@ export default function App() {
                 tabBarOptions={{
                   activeTintColor: "purple",
                   inactiveTintColor: "gray",
+
                   // tabStyle: "grey",
                   tabStyle: {
+                    borderTopColor: "transparent",
+                    // borderTopWidth: 0,
+
+                    // shadowColor: "transparent",
+                    // shadowOpacity: 0,
+                    // elevation: 0,
                     backgroundColor: drawerGrey,
                   },
                   style: { borderTopColor: "transparent" },
@@ -101,7 +108,12 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerTransparent: true,
+                        headerShown: true,
+                      }}
+                    >
                       {/* peut mettre des options la */}
                       <Stack.Screen
                         name="Home"
@@ -130,7 +142,6 @@ export default function App() {
                       >
                         {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
-
                       <Stack.Screen name="Restaurant">
                         {(props) => (
                           <RestaurantScreen
@@ -139,7 +150,6 @@ export default function App() {
                           />
                         )}
                       </Stack.Screen>
-
                       {/* <Stack.Screen
                         name="Profile"
                         options={{

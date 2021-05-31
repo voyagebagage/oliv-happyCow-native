@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import * as Location from "expo-location";
 
 // import * as React from "react";
 import Animated from "react-native-reanimated";
@@ -16,7 +17,6 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-console.log(windowWidth);
 // import { useNavigation } from "@react-navigation/core";
 import {
   Button,
@@ -37,40 +37,56 @@ import colors from "../assets/colors";
 const { drawerGrey } = colors;
 
 export default function HomeScreen({ navigation, route }) {
-  navigation.setOptions({
-    headerShown: true,
-    headerTransparent: true,
-  });
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(100);
+  const [toggleFilter, setToggleFilter] = useState("");
+  const [limit, setLimit] = useState(50);
   const [skip, setSkip] = useState(0);
-  // const [searchResto, setSearchResto] = useState("");
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&limit=${limit}&skip=${skip}`
-        );
+        const { status } = await Location.requestForegroundPermissionsAsync();
+
+        let response;
+        if (status === "granted") {
+          // 1 - collect GPS coordinates of the user's device
+          const location = await Location.getCurrentPositionAsync();
+          // console.log(location);
+          // console.log(Location);
+          setLat(location.coords.latitude);
+          setLong(location.coords.longitude);
+
+          // 2 - make requests related to his location
+          response = await axios.get(
+            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`
+          );
+        } else {
+          // one request w/ all the restaurants
+          response = await axios.get(
+            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&limit=${limit}&skip=${skip}`
+          );
+        }
         setData(response.data);
         setIsLoading(false);
-        console.log(limit);
+        // console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     };
     fetchData();
-  }, [search, limit, skip]);
+  }, [search, toggleFilter, limit, skip]);
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
 
-  // RECHERCHE
+  // SEARCH
   const handleSearchResto = (text) => {
     if (text) {
       // text.preventDefault();
       setSearch(text);
-      console.log(text);
+      // console.log(text);
     } else {
       return false;
     }
@@ -84,8 +100,8 @@ export default function HomeScreen({ navigation, route }) {
       style={{
         backgroundColor: drawerGrey,
         padding: 16,
-        height: 750,
-        borderBottomColor: "transparent",
+        height: windowHeight * 2,
+        // borderBottomColor: "transparent",
       }}
     >
       <View style={styles.container}>
@@ -135,7 +151,36 @@ export default function HomeScreen({ navigation, route }) {
     </>
   ) : (
     <>
-      <MapView style={styles.map} provider={PROVIDER_GOOGLE} />
+      <MapView
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        // To center on an specific area :
+
+        initialRegion={{
+          latitude: 48.856614,
+          longitude: 2.3522219,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
+        // To show user's location :
+        showsUserLocation={true}
+      >
+        {/* {console.log(data)} */}
+        {data.map((item) => {
+          // console.log(item.location.lat);
+
+          return (
+            <MapView.Marker
+              key={item.placeId}
+              coordinate={{
+                latitude: item.location.lat,
+                longitude: item.location.lng,
+              }}
+              // style={styles.markers}
+            />
+          );
+        })}
+      </MapView>
       <Image style={styles.logo} source={HappyCowLogoText} />
       <View style={styles.searchBarView}>
         <SearchBar
@@ -156,30 +201,19 @@ export default function HomeScreen({ navigation, route }) {
           value={search}
         />
       </View>
-      {/* <Button
-          title="Open Bottom Sheet"
-          onPress={() => sheetRef.current.snapTo("20%")}
-        /> */}
+
       {Platform.OS === "ios" ? (
         <BottomSheet
           // ref={sheetRef}
-          // initialSnap={{}}
-
           // enabledBottomInitialAnimation={true}
-          // initialSnap={["20%"]}
           snapPoints={["75%", "50%", "20%"]}
-          // borderRadius={10}
           renderContent={renderContent}
-          // onOpenStart={() => sheetRef.current.initialSnap("20%")}
         />
       ) : (
         <BottomSheet
           // ref={sheetRef}
-          // initialSnap
-          // initialSnap={true}
           snapPoints={["80%", "55%", "20%"]}
           // enabledBottomInitialAnimation={true}
-          // borderRadius={10}
           renderContent={renderContent}
         />
       )}
@@ -230,6 +264,11 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  markers: {
+    height: 20,
+    width: 20,
+    backgroundColor: "red",
   },
   searchBarView: {
     marginTop: windowHeight * 0.088,
