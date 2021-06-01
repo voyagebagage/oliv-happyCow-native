@@ -5,7 +5,6 @@ import * as Location from "expo-location";
 // import * as React from "react";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
-// import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Package react-native-maps pour afficher une Map
 import MapView, { PROVIDER_GOOGLE, Callout } from "react-native-maps";
@@ -15,12 +14,12 @@ import HappyCowLogoText from "../assets/HappyCowLogoText.png";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 
-// import { Rating, AirbnbRating } from "react-native-ratings";
-
+import CompatibleButton from "../components/CompatibleButton";
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 // import { useNavigation } from "@react-navigation/core";
+
 import {
   Button,
   Text,
@@ -28,15 +27,24 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity,
   ImageBackground,
   StyleSheet,
   TextInput,
   Platform,
   ScrollView,
 } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
 import { SearchBar } from "react-native-elements";
 
+// if (Platform.OS !== "ios") {
+//   import TouchableOpacity = require("react-native");
+// }
+// if (Platform.OS !== "android") {
+//   import TouchableOpacity = require("react-native-gesture-handler");
+// }
+//  {Platform.OS ==="ios" ? ( import TouchableOpacity from "react-native"):
+// (  TouchableOpacity  from "react-native-gesture-handler")};
 import colors from "../assets/colors";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
@@ -96,7 +104,7 @@ export default function HomeScreen({ navigation, route }) {
     } else if ((type = "vegetarian")) {
       return (color = "purple");
     } else {
-      color = "indigo";
+      color = "blue";
     }
     //   } else if (type === "Veg Store") {
     //     return (color = "navy");
@@ -142,30 +150,34 @@ export default function HomeScreen({ navigation, route }) {
           style={styles.scrollView}
           contentContainerStyle={styles.scrollViewContent}
         >
-          <TouchableOpacity
-            style={styles.buttonFlatList}
-            onPress={() => {
-              setToggleFilter("vegan");
-            }}
-          >
-            <Text style={styles.buttonColorGreen}>Vegan</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonFlatList}
-            onPress={() => {
-              setToggleFilter("vegetarian");
-            }}
-          >
-            <Text style={styles.buttonColorPurple}>Vegetarian</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonFlatList}
-            onPress={() => {
-              setToggleFilter("veg-option");
-            }}
-          >
-            <Text style={styles.buttonColorRed}>Veg-Options</Text>
-          </TouchableOpacity>
+          <CompatibleButton
+            type={""}
+            buttonName={"ALL"}
+            setToggleFilter={setToggleFilter}
+            styleButton={styles.buttonFlatListAll}
+            styleText={styles.buttonAll}
+          />
+          <CompatibleButton
+            type={"vegan"}
+            buttonName={"Vegan"}
+            setToggleFilter={setToggleFilter}
+            styleButton={styles.buttonFlatList}
+            styleText={styles.buttonColorGreen}
+          />
+          <CompatibleButton
+            type={"vegetarian"}
+            buttonName={"Vegetarian"}
+            setToggleFilter={setToggleFilter}
+            styleButton={styles.buttonFlatList}
+            styleText={styles.buttonColorPurple}
+          />
+          <CompatibleButton
+            type={"veg-options"}
+            buttonName={"Veg-option"}
+            setToggleFilter={setToggleFilter}
+            styleButton={styles.buttonFlatList}
+            styleText={styles.buttonColorRed}
+          />
         </ScrollView>
         <FlatList
           data={data}
@@ -234,9 +246,10 @@ export default function HomeScreen({ navigation, route }) {
         initialRegion={{
           latitude: 48.856614,
           longitude: 2.3522219,
-          latitudeDelta: 0.2,
-          longitudeDelta: 0.2,
+          latitudeDelta: 0.17,
+          longitudeDelta: 0.17,
         }}
+        mapPadding={{ top: 0, left: 0, right: 0, bottom: windowHeight * 0.45 }}
         // To show user's location :
         showsUserLocation={true}
       >
@@ -346,7 +359,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     // alignItems: "center",
     // margin: 10,
@@ -354,14 +367,15 @@ const styles = StyleSheet.create({
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST HEADER, buttons etc|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   scrollView: {
-    height: 40,
+    height: windowHeight * 0.04,
     // flexDirection: "row",
   },
   scrollViewContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    flex: 1,
+    // flex: 1,
+    width: windowWidth * 1.05,
     // borderColor: "crimson",
     // borderWidth: 1,
   },
@@ -375,11 +389,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     shadowColor: "white",
   },
-  // buttonText: {
-  //   alignSelf: "center",
-  //   color: "white",
-  //   fontWeight: "bold",
-  // },
+  buttonFlatListAll: {
+    height: windowHeight * 0.037,
+    width: windowWidth * 0.15,
+    backgroundColor: drawerGrey,
+    borderColor: "white",
+    borderWidth: 1.1,
+    borderRadius: 20,
+    justifyContent: "center",
+    shadowColor: "white",
+  },
+  buttonAll: {
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold",
+    // width: windowWidth * 0.15,
+  },
   buttonColorGreen: {
     alignSelf: "center",
     color: "white",
@@ -437,10 +462,11 @@ const styles = StyleSheet.create({
   },
   calloutButton: {
     flexDirection: "column",
-
+    backgroundColor: "transparent",
+    borderRadius: 20,
     // height: 80,
   },
-  calloutPic: { height: 60, width: 60 },
+  calloutPic: { height: 60, width: 60, borderRadius: 20 },
 
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|S_E_A_R_C_H|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   searchBarView: {
