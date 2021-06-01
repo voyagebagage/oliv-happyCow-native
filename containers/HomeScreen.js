@@ -5,14 +5,17 @@ import * as Location from "expo-location";
 // import * as React from "react";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Package react-native-maps pour afficher une Map
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Callout } from "react-native-maps";
 
 import splasHappy from "../assets/splasHappy.png";
 import HappyCowLogoText from "../assets/HappyCowLogoText.png";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
+
+// import { Rating, AirbnbRating } from "react-native-ratings";
 
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
@@ -25,7 +28,7 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity,
+  // TouchableOpacity,
   ImageBackground,
   StyleSheet,
   TextInput,
@@ -42,10 +45,11 @@ export default function HomeScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(500);
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
+  let type = "";
   // const [type, setType] = useState("vegan" || "vegetarian" || "veg-options");
   useEffect(() => {
     const fetchData = async () => {
@@ -80,8 +84,34 @@ export default function HomeScreen({ navigation, route }) {
     };
     fetchData();
   }, [search, toggleFilter, limit, skip]);
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
 
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+  const handleColors = (type) => {
+    // console.log(type);
+    let color = "";
+    if (type === "veg-options") {
+      return (color = "tomato");
+    } else if (type === "vegan") {
+      return (color = "green");
+    } else if ((type = "vegetarian")) {
+      return (color = "");
+    } else if (type === "Veg Store") {
+      return (color = "navy");
+    } else if ((type = "Ice Cream")) {
+      return (color = "yellow");
+    } else if (type === "Other") {
+      return (color = "linen");
+    } else if ((type = "Health Store")) {
+      return (color = "white");
+    } else if (type === "Organization") {
+      return (color = "tan");
+    } else if ((type = "Professional")) {
+      return (color = "turquoise");
+    } else if (type === "Bakery") {
+      return (color = "wheat");
+    }
+  };
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   // SEARCH
   const handleSearchResto = (text) => {
     if (text) {
@@ -93,9 +123,9 @@ export default function HomeScreen({ navigation, route }) {
     }
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  const toggleVegan = () => {
-    setToggleFilter("");
+  const toggleVegan = (toggleFilter) => {
     setToggleFilter("vegan");
+    // console.log(toggleFilter.JSON.stringify);
   };
   const toggleVegetarian = () => {
     setToggleFilter("vegetarian");
@@ -110,7 +140,7 @@ export default function HomeScreen({ navigation, route }) {
       style={{
         backgroundColor: drawerGrey,
         padding: 16,
-        height: windowHeight * 2,
+        height: Platform.OS === "ios" ? windowHeight * 0.75 : windowHeight * 11,
         // borderBottomColor: "transparent",
       }}
     >
@@ -121,9 +151,7 @@ export default function HomeScreen({ navigation, route }) {
         >
           <TouchableOpacity
             style={styles.buttonFlatList}
-            onPress={
-              toggleFilter !== "" ? toggleVegan : setToggleFilter("vegan")
-            }
+            onPress={toggleFilter === "" ? toggleVegan : setToggleFilter("")}
           >
             <Text style={styles.buttonColorGreen}>Vegan</Text>
           </TouchableOpacity>
@@ -149,23 +177,37 @@ export default function HomeScreen({ navigation, route }) {
           keyExtractor={(item) => String(item.placeId)}
           // ItemSeparatorComponent={ItemSeparatorView}
           renderItem={({ item }) => {
-            // console.log(item.placeId);
-            // console.log(item.name);
             return (
               <>
                 {/* {item.category === 14 && ( */}
                 <TouchableOpacity
                   style={styles.flatList}
                   onPress={() =>
-                    navigation.navigate("Restaurant", { id: item.placeId })
+                    navigation.navigate("Restaurant", {
+                      id: item.placeId,
+                      name: item.name,
+                      description: item.description,
+                      rating: item.rating,
+                      pictures: item.pictures,
+                      // color: pinColor,
+                    })
                   }
                 >
-                  <View>
-                    <Text style={styles.flatListText}>{item.name}</Text>
-                    <Text style={styles.flatListText}>{item.type}</Text>
-                    <Text style={styles.flatListText}>{item.category}</Text>
-                    <Text style={styles.flatListText}>{item.vegan}</Text>
-                    <Text style={styles.flatListText}>{item.vegOnly}</Text>
+                  <Image
+                    style={styles.flatListPic}
+                    source={{ uri: item.thumbnail }}
+                  />
+                  <View style={styles.flatListContent}>
+                    <View style={styles.flatListNameType}>
+                      <Text style={styles.flatListText}>{item.name}</Text>
+                      <Text style={styles.flatListText}>{item.type}</Text>
+                    </View>
+
+                    <Text style={styles.flatListText}>{item.rating}</Text>
+
+                    <Text style={styles.flatListText} numberOfLines={2}>
+                      {item.description}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </>
@@ -206,6 +248,8 @@ export default function HomeScreen({ navigation, route }) {
         {/* {console.log(data)} */}
         {data.map((item) => {
           // console.log(item.location.lat);
+          type = item.type;
+          // console.log(type);
 
           return (
             <MapView.Marker
@@ -214,8 +258,18 @@ export default function HomeScreen({ navigation, route }) {
                 latitude: item.location.lat,
                 longitude: item.location.lng,
               }}
-              // style={styles.markers}
-            />
+              pinColor={handleColors(type)}
+            >
+              <Callout>
+                <TouchableOpacity style={styles.calloutButton}>
+                  <Text>{item.name}</Text>
+                  <Image
+                    style={styles.calloutPic}
+                    source={{ uri: item.thumbnail }}
+                  />
+                </TouchableOpacity>
+              </Callout>
+            </MapView.Marker>
           );
         })}
       </MapView>
@@ -243,6 +297,7 @@ export default function HomeScreen({ navigation, route }) {
       {Platform.OS === "ios" ? (
         <BottomSheet
           // ref={sheetRef}
+          enabledInnerScrolling={true}
           // enabledBottomInitialAnimation={true}
           snapPoints={["50%", "20%", "75%"]}
           renderContent={renderContent}
@@ -250,6 +305,7 @@ export default function HomeScreen({ navigation, route }) {
       ) : (
         <BottomSheet
           // ref={sheetRef}
+          enabledInnerScrolling={true}
           snapPoints={["55%", "20%", "80%"]}
           // enabledBottomInitialAnimation={true}
           renderContent={renderContent}
@@ -300,8 +356,11 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // margin: 10,
   },
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST HEADER, buttons etc|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   scrollView: {
     height: 40,
+    flexDirection: "row",
   },
   scrollViewContent: {
     flexDirection: "row",
@@ -312,11 +371,11 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   buttonFlatList: {
-    height: windowHeight * 0.04,
+    height: windowHeight * 0.037,
     width: windowWidth * 0.29,
     backgroundColor: drawerGrey,
     borderColor: "white",
-    borderWidth: 1.3,
+    borderWidth: 1.1,
     borderRadius: 20,
     justifyContent: "center",
     shadowColor: "white",
@@ -345,16 +404,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: redFltr,
   },
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   flatList: {
-    height: windowHeight * 0.15,
-    borderBottomColor: "grey",
-    borderBottomWidth: 2,
+    marginTop: windowHeight * 0.014,
+    height: windowHeight * 0.125,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  flatListPic: {
+    height: windowHeight * 0.125,
+    width: windowWidth * 0.28,
+  },
+  flatListContent: {
+    flex: 1,
+    justifyContent: "space-between",
 
-    // width: 100,
+    paddingLeft: windowWidth * 0.02,
+    marginTop: windowWidth * 0.02,
+  },
+  flatListNameType: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   flatListText: {
     color: "lightgray",
+    // textAlign: "left",
   },
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|M.A.P.|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
   map: {
     flex: 1,
   },
@@ -363,6 +440,14 @@ const styles = StyleSheet.create({
     width: 20,
     backgroundColor: "red",
   },
+  calloutButton: {
+    flexDirection: "column",
+
+    // height: 80,
+  },
+  calloutPic: { height: 60, width: 60 },
+
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|S_E_A_R_C_H|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   searchBarView: {
     marginTop: windowHeight * 0.088,
     backgroundColor: "transparent",
@@ -373,7 +458,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomColor: "transparent",
     borderTopColor: "transparent",
-    //
     alignItems: "center",
     paddingBottom: 10,
     paddingVertical: windowHeight * 0.008,
@@ -402,3 +486,12 @@ const styles = StyleSheet.create({
     marginRight: -10,
   },
 });
+
+// item.type === "vegan"
+//     ? "green"
+//     : item.type === "vegetarian"
+//     ? "purple"
+//     : item.type === "veg-options"
+//     ? "tomato"
+//     : "indigo"
+// style={styles.markers}

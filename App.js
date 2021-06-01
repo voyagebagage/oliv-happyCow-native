@@ -117,32 +117,28 @@ export default function App() {
                       {/* peut mettre des options la */}
                       <Stack.Screen
                         name="Home"
-                        // noShadow={true}
-                        // hasTabs={true}
-
                         options={{
-                          headerStyle: {
-                            // shadowColor: "transparent",
-                            // shadowOpacity: 0,
-                            // elevation: 0,
-                            // height: windowHeight * 0.09,
-                            // backgroundColor: "transparent",
-                            // borderBottomWidth: 0,
-                            // flexDirection: "row",
-                          },
-
+                          // headerStyle: {
+                          // },
                           // headerTitleStyle: {
-                          //   fontWeight: "bold",
-                          //   alignSelf: "center",
-                          //   color: "purple",
-                          //   fontSize: windowHeight * 0.026,
                           // },
                           title: " ",
                         }}
                       >
                         {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
-                      <Stack.Screen name="Restaurant">
+                      <Stack.Screen
+                        // options={{
+                        //   style: {
+                        //     height: 40,
+                        //     backgroundColor: "blue",
+                        //     marginTop: 30,
+                        //   },
+                        //   // headerTransparent: false,
+                        //   // headerShown: false,
+                        // }}
+                        name="Restaurant"
+                      >
                         {(props) => (
                           <RestaurantScreen
                             {...props}
