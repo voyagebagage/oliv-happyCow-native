@@ -5,7 +5,7 @@ import * as Location from "expo-location";
 // import * as React from "react";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Package react-native-maps pour afficher une Map
 import MapView, { PROVIDER_GOOGLE, Callout } from "react-native-maps";
@@ -28,7 +28,7 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  // TouchableOpacity,
+  TouchableOpacity,
   ImageBackground,
   StyleSheet,
   TextInput,
@@ -45,7 +45,7 @@ export default function HomeScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
-  const [limit, setLimit] = useState(500);
+  const [limit, setLimit] = useState(50);
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
@@ -94,22 +94,25 @@ export default function HomeScreen({ navigation, route }) {
     } else if (type === "vegan") {
       return (color = "green");
     } else if ((type = "vegetarian")) {
-      return (color = "");
-    } else if (type === "Veg Store") {
-      return (color = "navy");
-    } else if ((type = "Ice Cream")) {
-      return (color = "yellow");
-    } else if (type === "Other") {
-      return (color = "linen");
-    } else if ((type = "Health Store")) {
-      return (color = "white");
-    } else if (type === "Organization") {
-      return (color = "tan");
-    } else if ((type = "Professional")) {
-      return (color = "turquoise");
-    } else if (type === "Bakery") {
-      return (color = "wheat");
+      return (color = "purple");
+    } else {
+      color = "indigo";
     }
+    //   } else if (type === "Veg Store") {
+    //     return (color = "navy");
+    //   } else if ((type = "Ice Cream")) {
+    //     return (color = "yellow");
+    //   } else if (type === "Other") {
+    //     return (color = "linen");
+    //   } else if ((type = "Health Store")) {
+    //     return (color = "white");
+    //   } else if (type === "Organization") {
+    //     return (color = "tan");
+    //   } else if ((type = "Professional")) {
+    //     return (color = "turquoise");
+    //   } else if (type === "Bakery") {
+    //     return (color = "wheat");
+    //   }
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   // SEARCH
@@ -123,16 +126,6 @@ export default function HomeScreen({ navigation, route }) {
     }
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  const toggleVegan = (toggleFilter) => {
-    setToggleFilter("vegan");
-    // console.log(toggleFilter.JSON.stringify);
-  };
-  const toggleVegetarian = () => {
-    setToggleFilter("vegetarian");
-  };
-  const toggleVegOptions = () => {
-    setToggleFilter("veg-options");
-  };
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   const renderContent = () => (
@@ -140,7 +133,7 @@ export default function HomeScreen({ navigation, route }) {
       style={{
         backgroundColor: drawerGrey,
         padding: 16,
-        height: Platform.OS === "ios" ? windowHeight * 0.75 : windowHeight * 11,
+        height: Platform.OS === "ios" ? windowHeight * 0.75 : windowHeight * 10,
         // borderBottomColor: "transparent",
       }}
     >
@@ -151,23 +144,25 @@ export default function HomeScreen({ navigation, route }) {
         >
           <TouchableOpacity
             style={styles.buttonFlatList}
-            onPress={toggleFilter === "" ? toggleVegan : setToggleFilter("")}
+            onPress={() => {
+              setToggleFilter("vegan");
+            }}
           >
             <Text style={styles.buttonColorGreen}>Vegan</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonFlatList}
-            onPress={
-              toggleFilter === "" ? toggleVegetarian : setToggleFilter("")
-            }
+            onPress={() => {
+              setToggleFilter("vegetarian");
+            }}
           >
             <Text style={styles.buttonColorPurple}>Vegetarian</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonFlatList}
-            onPress={
-              toggleFilter === "" ? toggleVegOptions : setToggleFilter("")
-            }
+            onPress={() => {
+              setToggleFilter("veg-option");
+            }}
           >
             <Text style={styles.buttonColorRed}>Veg-Options</Text>
           </TouchableOpacity>
@@ -360,7 +355,7 @@ const styles = StyleSheet.create({
 
   scrollView: {
     height: 40,
-    flexDirection: "row",
+    // flexDirection: "row",
   },
   scrollViewContent: {
     flexDirection: "row",
@@ -495,3 +490,14 @@ const styles = StyleSheet.create({
 //     ? "tomato"
 //     : "indigo"
 // style={styles.markers}
+// - '#f0f' (#rgb)
+// - '#f0fc' (#rgba)
+// - '#ff00ff' (#rrggbb)
+// - '#ff00ff00' (#rrggbbaa)
+// - 'rgb(255, 255, 255)'
+// - 'rgba(255, 255, 255, 1.0)'
+// - 'hsl(360, 100%, 100%)'
+// - 'hsla(360, 100%, 100%, 1.0)'
+// - 'transparent'
+// - 'red'
+// - 0xff00ff00 (0xrrggbbaa)

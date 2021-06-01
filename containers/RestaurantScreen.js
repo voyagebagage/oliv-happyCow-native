@@ -8,17 +8,17 @@ export default function RestaurantScreen({ navigation, route }) {
   return (
     // <View>
     <View
-      styles={{
-        // flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        // position: "absolute",
-        heigth: 300,
-        // marginTop: 300,
-        borderWidth: 10,
-        borderColor: "red",
-        backgroundColor: "purple",
-      }}
+    // style={{
+    //   // flex: 1,
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    //   // position: "absolute",
+    //   heigth: 300,
+    //   marginTop: 100,
+    //   borderWidth: 5,
+    //   // borderColor: "red",
+    //   // backgroundColor: "purple",
+    // }}
     >
       <Text>Hello resto</Text>
       <Text>{route.params.id}</Text>
