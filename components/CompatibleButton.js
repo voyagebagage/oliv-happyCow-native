@@ -15,12 +15,12 @@ const CompatibleButton = ({
     <>
       {Platform.OS === "ios" ? (
         <TouchableOpacity
-          style={styleButton}
+          style={styleButton || null}
           onPress={() => {
             setToggleFilter(type);
           }}
         >
-          <Text style={styleText}>{buttonName}</Text>
+          <Text style={styleText || null}>{buttonName}</Text>
         </TouchableOpacity>
       ) : (
         <RNGTouchableOpacity

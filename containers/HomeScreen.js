@@ -15,10 +15,14 @@ import HappyCowLogoText from "../assets/HappyCowLogoText.png";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import CompatibleButton from "../components/CompatibleButton";
+import FlatListContents from "../components/FlatlistContents";
+
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 // import { useNavigation } from "@react-navigation/core";
+
+import { isPointWithinRadius } from "geolib";
 
 import {
   Button,
@@ -28,24 +32,19 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
+  TouchableOpacity,
   StyleSheet,
   TextInput,
   Platform,
   ScrollView,
 } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
+// import {  } from "react-native";
+// import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
 import { SearchBar } from "react-native-elements";
+// import isPointWithinRadius from "geolib/es/isPointWithinRadius";
 
-// if (Platform.OS !== "ios") {
-//   import TouchableOpacity = require("react-native");
-// }
-// if (Platform.OS !== "android") {
-//   import TouchableOpacity = require("react-native-gesture-handler");
-// }
-//  {Platform.OS ==="ios" ? ( import TouchableOpacity from "react-native"):
-// (  TouchableOpacity  from "react-native-gesture-handler")};
 import colors from "../assets/colors";
+import RestaurantScreen from "./RestaurantScreen";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
 export default function HomeScreen({ navigation, route }) {
@@ -53,12 +52,17 @@ export default function HomeScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
+  const [nearest, setNearest] = useState(false);
   const [limit, setLimit] = useState(50);
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
+  const [radius, setRadius] = useState(1500);
+  const [counter, setCounter] = useState(0);
+
   let type = "";
-  // const [type, setType] = useState("vegan" || "vegetarian" || "veg-options");
+  let color = "";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -91,36 +95,35 @@ export default function HomeScreen({ navigation, route }) {
       }
     };
     fetchData();
-  }, [search, toggleFilter, limit, skip]);
+  }, [search, toggleFilter, limit, skip, radius]);
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   const handleColors = (type) => {
     // console.log(type);
-    let color = "";
+    // let color = "";
     if (type === "veg-options") {
       return (color = "tomato");
     } else if (type === "vegan") {
       return (color = "green");
-    } else if ((type = "vegetarian")) {
+    } else if (type === "vegetarian") {
       return (color = "purple");
+    } else if (type === "Veg Store") {
+      return (color = "navy");
+    } else if (type === "Ice Cream") {
+      return (color = "yellow");
+    } else if (type === "Other") {
+      return (color = "linen");
+    } else if (type === "Health Store") {
+      return (color = "white");
+    } else if (type === "Organization") {
+      return (color = "tan");
+    } else if (type === "Professional") {
+      return (color = "turquoise");
+    } else if (type === "Bakery") {
+      return (color = "wheat");
     } else {
-      color = "blue";
+      return (color = "blue");
     }
-    //   } else if (type === "Veg Store") {
-    //     return (color = "navy");
-    //   } else if ((type = "Ice Cream")) {
-    //     return (color = "yellow");
-    //   } else if (type === "Other") {
-    //     return (color = "linen");
-    //   } else if ((type = "Health Store")) {
-    //     return (color = "white");
-    //   } else if (type === "Organization") {
-    //     return (color = "tan");
-    //   } else if ((type = "Professional")) {
-    //     return (color = "turquoise");
-    //   } else if (type === "Bakery") {
-    //     return (color = "wheat");
-    //   }
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   // SEARCH
@@ -142,7 +145,6 @@ export default function HomeScreen({ navigation, route }) {
         backgroundColor: drawerGrey,
         padding: 16,
         height: Platform.OS === "ios" ? windowHeight * 0.75 : windowHeight * 10,
-        // borderBottomColor: "transparent",
       }}
     >
       <View style={styles.container}>
@@ -179,47 +181,12 @@ export default function HomeScreen({ navigation, route }) {
             styleText={styles.buttonColorRed}
           />
         </ScrollView>
-        <FlatList
+        <FlatListContents
           data={data}
-          keyExtractor={(item) => String(item.placeId)}
-          // ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={({ item }) => {
-            return (
-              <>
-                {/* {item.category === 14 && ( */}
-                <TouchableOpacity
-                  style={styles.flatList}
-                  onPress={() =>
-                    navigation.navigate("Restaurant", {
-                      id: item.placeId,
-                      name: item.name,
-                      description: item.description,
-                      rating: item.rating,
-                      pictures: item.pictures,
-                      // color: pinColor,
-                    })
-                  }
-                >
-                  <Image
-                    style={styles.flatListPic}
-                    source={{ uri: item.thumbnail }}
-                  />
-                  <View style={styles.flatListContent}>
-                    <View style={styles.flatListNameType}>
-                      <Text style={styles.flatListText}>{item.name}</Text>
-                      <Text style={styles.flatListText}>{item.type}</Text>
-                    </View>
-
-                    <Text style={styles.flatListText}>{item.rating}</Text>
-
-                    <Text style={styles.flatListText} numberOfLines={2}>
-                      {item.description}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </>
-            );
-          }}
+          navigation={navigation}
+          // color={color}
+          // type={type}
+          handleColors={handleColors}
         />
       </View>
     </View>
@@ -246,20 +213,30 @@ export default function HomeScreen({ navigation, route }) {
         initialRegion={{
           latitude: 48.856614,
           longitude: 2.3522219,
-          latitudeDelta: 0.17,
-          longitudeDelta: 0.17,
+          latitudeDelta: 0.15,
+          longitudeDelta: 0.15,
         }}
+        //only IOS
         mapPadding={{ top: 0, left: 0, right: 0, bottom: windowHeight * 0.45 }}
         // To show user's location :
         showsUserLocation={true}
+        zoomControlEnabled={true}
+        zoomEnabled={true}
+        showsScale={true}
       >
-        {/* {console.log(data)} */}
         {data.map((item) => {
-          // console.log(item.location.lat);
           type = item.type;
-          // console.log(type);
+          const closest = isPointWithinRadius(
+            { latitude: lat, longitude: long },
+            {
+              latitude: item.location.lat,
+              longitude: item.location.lng,
+            },
 
-          return (
+            radius
+          );
+          console.log(closest);
+          return closest ? (
             <MapView.Marker
               key={item.placeId}
               coordinate={{
@@ -278,7 +255,7 @@ export default function HomeScreen({ navigation, route }) {
                 </TouchableOpacity>
               </Callout>
             </MapView.Marker>
-          );
+          ) : null;
         })}
       </MapView>
       <Image style={styles.logo} source={HappyCowLogoText} />
@@ -300,6 +277,37 @@ export default function HomeScreen({ navigation, route }) {
           onChangeText={handleSearchResto}
           value={search}
         />
+        <View style={styles.buttonView}>
+          <View style={styles.buttonLeftView}>
+            <TouchableOpacity
+              onPress={() => setLimit(limit + 50)}
+              style={styles.loadMore}
+            >
+              <Text style={{ color: "white" }}> Load More </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setLimit(limit - 50)}
+              style={styles.loadLess}
+            >
+              <Text> Load Less </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonRightView}>
+            <TouchableOpacity
+              style={styles.plusButton}
+              onPress={() => setRadius(radius + 1000)}
+            >
+              <Text> +</Text>
+            </TouchableOpacity>
+            <Text>{radius / 1000}km</Text>
+            <TouchableOpacity
+              style={styles.minusButton}
+              onPress={() => setRadius(radius - 1000)}
+            >
+              <Text style={{ color: "white" }}> -</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
 
       {Platform.OS === "ios" ? (
@@ -424,32 +432,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: redFltr,
   },
-  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  flatList: {
-    marginTop: windowHeight * 0.014,
-    height: windowHeight * 0.125,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  flatListPic: {
-    height: windowHeight * 0.125,
-    width: windowWidth * 0.28,
-  },
-  flatListContent: {
-    flex: 1,
-    justifyContent: "space-between",
 
-    paddingLeft: windowWidth * 0.02,
-    marginTop: windowWidth * 0.02,
-  },
-  flatListNameType: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  flatListText: {
-    color: "lightgray",
-    // textAlign: "left",
-  },
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|M.A.P.|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   map: {
@@ -467,7 +450,64 @@ const styles = StyleSheet.create({
     // height: 80,
   },
   calloutPic: { height: 60, width: 60, borderRadius: 20 },
+  buttonView: {
+    flexDirection: "row",
+    flex: 1,
+    borderColor: "blue",
+    borderWidth: 4,
+    justifyContent: "space-between",
+    height: windowHeight * 0.115,
+  },
+  buttonLeftView: {
+    borderColor: "purple",
+    borderWidth: 4,
+    justifyContent: "space-between",
+  },
+  loadMore: {
+    marginLeft: windowWidth * 0.007,
+    justifyContent: "center",
+    height: windowHeight * 0.04,
+    // borderWidth: 2,
+    backgroundColor: drawerGrey,
+    borderRadius: 5,
+  },
+  loadLess: {
+    marginLeft: windowWidth * 0.007,
+    justifyContent: "center",
+    height: windowHeight * 0.04,
+    // borderWidth: 2,
+    backgroundColor: "gray",
+    borderRadius: 5,
+  },
+  buttonRightView: {
+    borderColor: "crimson",
+    borderWidth: 4,
+    justifyContent: "space-between",
+  },
+  plusButton: {
+    marginLeft: windowWidth * 0.007,
+    justifyContent: "center",
+    alignSelf: "center",
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.04,
+    // borderWidth: 2,
+    backgroundColor: purpleFltr,
+    borderRadius: 100,
 
+    // color: "white",
+  },
+  minusButton: {
+    marginLeft: windowWidth * 0.007,
+    justifyContent: "center",
+    alignSelf: "center",
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.04,
+    // borderWidth: 2,
+    backgroundColor: drawerGrey,
+    borderRadius: 100,
+
+    // color: "white",
+  },
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|S_E_A_R_C_H|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   searchBarView: {
     marginTop: windowHeight * 0.088,
