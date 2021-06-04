@@ -10,19 +10,41 @@ import {
   StyleSheet,
   Image,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
 
-const FlatListContent = ({ data, navigation, handleColors }) => {
+const FlatListContent = ({
+  data,
+  navigation,
+  handleColors,
+  setLimit,
+  limit,
+  addFav,
+  // isLoading,
+  // renderFooter,
+}) => {
+  const handleLoadMore = () => {
+    setLimit(limit + 20);
+  };
+  const renderFooter = () => {
+    return isLoading ? (
+      <View style={{ height: 50 }}>
+        <ActivityIndicator
+          size="large"
+          color="green"
+          style={styles.activityIndicator}
+        />
+      </View>
+    ) : null;
+  };
   return (
     <>
       {Platform.OS === "ios" ? (
         <FlatList
           data={data}
           keyExtractor={(item) => String(item.placeId)}
-          // ItemSeparatorComponent={ItemSeparatorView}
           renderItem={({ item }) => {
-            // type = item.type;
             // console.log("TYPE----------", type);
             return (
               <>
@@ -34,7 +56,7 @@ const FlatListContent = ({ data, navigation, handleColors }) => {
                       name: item.name,
                       description: item.description,
                       rating: item.rating,
-                      pictures: item.pictures,
+                      thumbnail: item.thumbnail,
                       color: handleColors(item.type),
                     })
                   }
@@ -59,6 +81,8 @@ const FlatListContent = ({ data, navigation, handleColors }) => {
               </>
             );
           }}
+          onEndReached={handleLoadMore}
+          // ListFooterComponent={renderFooter}
         />
       ) : (
         <FlatList
@@ -76,7 +100,7 @@ const FlatListContent = ({ data, navigation, handleColors }) => {
                       name: item.name,
                       description: item.description,
                       rating: item.rating,
-                      pictures: item.pictures,
+                      thumbnail: item.thumbnail,
                       color: handleColors(item.type),
                     })
                   }
@@ -101,6 +125,8 @@ const FlatListContent = ({ data, navigation, handleColors }) => {
               </>
             );
           }}
+          // ListFooterComponent={renderFooter}
+          onEndReached={handleLoadMore}
         />
       )}
     </>
@@ -109,6 +135,9 @@ const FlatListContent = ({ data, navigation, handleColors }) => {
 export default FlatListContent;
 
 const styles = StyleSheet.create({
+  activityIndicator: {
+    marginTop: windowHeight * 0.15,
+  },
   //<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   flatList: {
     marginTop: windowHeight * 0.014,

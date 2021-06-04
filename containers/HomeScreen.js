@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 
 // import * as React from "react";
-import Animated from "react-native-reanimated";
+// import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
 
 // Package react-native-maps pour afficher une Map
-import MapView, { PROVIDER_GOOGLE, Callout } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Callout, Marker } from "react-native-maps";
 
 import splasHappy from "../assets/splasHappy.png";
 import HappyCowLogoText from "../assets/HappyCowLogoText.png";
@@ -43,17 +43,16 @@ import {
 import { SearchBar } from "react-native-elements";
 // import isPointWithinRadius from "geolib/es/isPointWithinRadius";
 
+// import RestaurantScreen from "./RestaurantScreen";
 import colors from "../assets/colors";
-import RestaurantScreen from "./RestaurantScreen";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
-export default function HomeScreen({ navigation, route }) {
+export default function HomeScreen({ navigation, route, addFav }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
-  const [nearest, setNearest] = useState(false);
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(25);
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
@@ -144,7 +143,10 @@ export default function HomeScreen({ navigation, route }) {
       style={{
         backgroundColor: drawerGrey,
         padding: 16,
-        height: Platform.OS === "ios" ? windowHeight * 0.75 : windowHeight * 10,
+        height:
+          Platform.OS === "ios"
+            ? windowHeight / 2
+            : windowHeight * 0.125 * limit + windowHeight * 0.04,
       }}
     >
       <View style={styles.container}>
@@ -184,9 +186,10 @@ export default function HomeScreen({ navigation, route }) {
         <FlatListContents
           data={data}
           navigation={navigation}
-          // color={color}
-          // type={type}
+          setLimit={setLimit}
+          limit={limit}
           handleColors={handleColors}
+          addFav={addFav}
         />
       </View>
     </View>
@@ -209,6 +212,10 @@ export default function HomeScreen({ navigation, route }) {
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
+        showsUserLocation={true}
+        zoomControlEnabled={true}
+        zoomEnabled={true}
+        showsScale={true}
         // To center on an specific area :
         initialRegion={{
           latitude: 48.856614,
@@ -219,10 +226,6 @@ export default function HomeScreen({ navigation, route }) {
         //only IOS
         mapPadding={{ top: 0, left: 0, right: 0, bottom: windowHeight * 0.45 }}
         // To show user's location :
-        showsUserLocation={true}
-        zoomControlEnabled={true}
-        zoomEnabled={true}
-        showsScale={true}
       >
         {data.map((item) => {
           type = item.type;
@@ -235,7 +238,7 @@ export default function HomeScreen({ navigation, route }) {
 
             radius
           );
-          console.log(closest);
+          // console.log(closest);
           return closest ? (
             <MapView.Marker
               key={item.placeId}
@@ -299,7 +302,11 @@ export default function HomeScreen({ navigation, route }) {
             >
               <Text> +</Text>
             </TouchableOpacity>
-            <Text>{radius / 1000}km</Text>
+            <Text
+              style={{ color: purpleFltr, fontWeight: "bold", fontSize: 20 }}
+            >
+              {radius / 1000}km
+            </Text>
             <TouchableOpacity
               style={styles.minusButton}
               onPress={() => setRadius(radius - 1000)}
@@ -453,15 +460,15 @@ const styles = StyleSheet.create({
   buttonView: {
     flexDirection: "row",
     flex: 1,
-    borderColor: "blue",
-    borderWidth: 4,
+    // borderColor: "blue",
+    // borderWidth: 4,
     justifyContent: "space-between",
     height: windowHeight * 0.115,
   },
   buttonLeftView: {
-    borderColor: "purple",
-    borderWidth: 4,
-    justifyContent: "space-between",
+    // borderColor: "purple",
+    // borderWidth: 4,
+    justifyContent: "space-evenly",
   },
   loadMore: {
     marginLeft: windowWidth * 0.007,
@@ -480,16 +487,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonRightView: {
-    borderColor: "crimson",
-    borderWidth: 4,
+    // borderColor: "crimson",
+    // borderWidth: 4,
     justifyContent: "space-between",
   },
   plusButton: {
-    marginLeft: windowWidth * 0.007,
+    marginRight: windowWidth * 0.03,
     justifyContent: "center",
     alignSelf: "center",
-    height: windowHeight * 0.04,
-    width: windowWidth * 0.04,
+    height: windowHeight * 0.075,
+    width: windowWidth * 0.08,
     // borderWidth: 2,
     backgroundColor: purpleFltr,
     borderRadius: 100,
@@ -497,11 +504,11 @@ const styles = StyleSheet.create({
     // color: "white",
   },
   minusButton: {
-    marginLeft: windowWidth * 0.007,
+    marginRight: windowWidth * 0.03,
     justifyContent: "center",
     alignSelf: "center",
-    height: windowHeight * 0.04,
-    width: windowWidth * 0.04,
+    height: windowHeight * 0.075,
+    width: windowWidth * 0.08,
     // borderWidth: 2,
     backgroundColor: drawerGrey,
     borderRadius: 100,
@@ -547,23 +554,3 @@ const styles = StyleSheet.create({
     marginRight: -10,
   },
 });
-
-// item.type === "vegan"
-//     ? "green"
-//     : item.type === "vegetarian"
-//     ? "purple"
-//     : item.type === "veg-options"
-//     ? "tomato"
-//     : "indigo"
-// style={styles.markers}
-// - '#f0f' (#rgb)
-// - '#f0fc' (#rgba)
-// - '#ff00ff' (#rrggbb)
-// - '#ff00ff00' (#rrggbbaa)
-// - 'rgb(255, 255, 255)'
-// - 'rgba(255, 255, 255, 1.0)'
-// - 'hsl(360, 100%, 100%)'
-// - 'hsla(360, 100%, 100%, 1.0)'
-// - 'transparent'
-// - 'red'
-// - 0xff00ff00 (0xrrggbbaa)

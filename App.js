@@ -10,7 +10,7 @@ import RestaurantScreen from "./containers/RestaurantScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
-import SettingsScreen from "./containers/SettingsScreen";
+import YummiestsScreen from "./containers/Yummiests";
 
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
@@ -20,11 +20,11 @@ import splasHappy from "./assets/splasHappy.png";
 // import {  } from '@expo/vector-icons';
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-import { StyleSheet, Image, ImageBackground, TextInput } from "react-native";
+import { StyleSheet, Image } from "react-native";
 // import Restaurant from "./containers/Restaurant";
 
 import colors from "./assets/colors";
-const { drawerGrey, lightGrey } = colors;
+const { drawerGrey, lightGrey, purpleFltr } = colors;
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -57,7 +57,6 @@ export default function App() {
 
     bootstrapAsync();
   }, []);
-
   return (
     <NavigationContainer>
       {isLoading ? (
@@ -120,7 +119,7 @@ export default function App() {
                         options={{
                           // headerStyle: {
                           // },
-                          // headerTitleStyle: {
+                          // headerTitleStyle: {`
                           // },
                           title: " ",
                         }}
@@ -128,23 +127,21 @@ export default function App() {
                         {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
                       <Stack.Screen
-                        // options={{
-                        //   style: {
-                        //     height: 40,
-                        //     backgroundColor: "blue",
-                        //     marginTop: 30,
-                        //   },
-                        //   // headerTransparent: false,
-                        //   // headerShown: false,
-                        // }}
                         name="Restaurant"
+                        // style={{
+                        //   backgroundColor: purpleFltr,
+                        //   color: "white",
+                        //   fontWeight: "bold",
+                        // }}
+                        // options={
+                        //   {
+                        //     // title: "Restaurant",
+                        //     // headerTitleStyle: {
+                        //     // },
+                        //   }
+                        // }
                       >
-                        {(props) => (
-                          <RestaurantScreen
-                            {...props}
-                            // navigation={navigation}
-                          />
-                        )}
+                        {(props) => <RestaurantScreen {...props} />}
                       </Stack.Screen>
                       {/* <Stack.Screen
                         name="Profile"
@@ -168,12 +165,27 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator
+                    // screenOptions={{
+                    //   headerTransparent: true,
+                    //   // headerShown: true,
+                    // }}
+                    >
                       <Stack.Screen
-                        name="Settings"
-                        options={{ title: "Settings", tabBarLabel: "Settings" }}
+                        name="Yummiests"
+                        options={{
+                          title: "My Yummiests",
+                          tabBarLabel: "My Yummiests",
+                          headerStyle: {
+                            backgroundColor: purpleFltr,
+                          },
+                          headerTitleStyle: {
+                            color: "white",
+                            fontWeight: "bold",
+                          },
+                        }}
                       >
-                        {() => <SettingsScreen setToken={setToken} />}
+                        {(props) => <YummiestsScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -189,6 +201,9 @@ export default function App() {
 const styles = StyleSheet.create({
   drawerGrey: {
     backgroundColor: drawerGrey,
+  },
+  purpleFltr: {
+    backgroundColor: purpleFltr,
   },
   lightGrey: { backgroundColor: lightGrey },
   splash: {
