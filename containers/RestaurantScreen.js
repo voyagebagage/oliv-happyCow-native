@@ -11,12 +11,14 @@ export default function RestaurantScreen({ navigation, route }) {
 
   const save = async (restaurant) => {
     try {
-      const jsonValue = JSON.stringify(restaurant);
-      const parsedFav = await AsyncStorage.setItem(
-        "restaurant",
-        JSON.stringify(jsonValue)
-      );
+      const favorites = await AsyncStorage.getItem("favorites");
+      const parsedFav = JSON.parse(favorites);
       const newTab = [...parsedFav];
+      let isAlreadyFavorite = false;
+      newTab.filter((newTabIndex) => {
+        if (newTabIndex.id === restaurant.id) return (isAlreadyFavorite = true);
+        if (newTabIndex.id !== restaurant.id) return newTab.push();
+      });
       console.log("-------------", newTab, "-----------");
     } catch (error) {
       console.log("-------------you got a saving issue!-----------");
