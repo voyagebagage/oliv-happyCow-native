@@ -32,7 +32,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-
+  const [limit, setLimit] = useState(25);
   const setToken = async (token) => {
     if (token) {
       AsyncStorage.setItem("userToken", token);
@@ -42,7 +42,38 @@ export default function App() {
 
     setUserToken(token);
   };
-
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+  let type = "";
+  let color = "";
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+  const handleColors = (type) => {
+    // console.log(type);
+    // let color = "";
+    if (type === "veg-options") {
+      return (color = "tomato");
+    } else if (type === "vegan") {
+      return (color = "green");
+    } else if (type === "vegetarian") {
+      return (color = "purple");
+    } else if (type === "Veg Store") {
+      return (color = "navy");
+    } else if (type === "Ice Cream") {
+      return (color = "yellow");
+    } else if (type === "Other") {
+      return (color = "linen");
+    } else if (type === "Health Store") {
+      return (color = "white");
+    } else if (type === "Organization") {
+      return (color = "tan");
+    } else if (type === "Professional") {
+      return (color = "turquoise");
+    } else if (type === "Bakery") {
+      return (color = "wheat");
+    } else {
+      return (color = "blue");
+    }
+  };
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
@@ -124,7 +155,16 @@ export default function App() {
                           title: " ",
                         }}
                       >
-                        {(props) => <HomeScreen {...props} />}
+                        {(props) => (
+                          <HomeScreen
+                            {...props}
+                            setLimit={setLimit}
+                            limit={limit}
+                            type={type}
+                            color={color}
+                            handleColors={handleColors}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="Restaurant"
@@ -185,7 +225,18 @@ export default function App() {
                           },
                         }}
                       >
-                        {(props) => <YummiestsScreen {...props} />}
+                        {(props) => (
+                          <YummiestsScreen
+                            {...props}
+                            isLoading={isLoading}
+                            setIsLoading={isLoading}
+                            setLimit={setLimit}
+                            limit={limit}
+                            type={type}
+                            color={color}
+                            handleColors={handleColors}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

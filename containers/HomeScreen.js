@@ -47,21 +47,25 @@ import { SearchBar } from "react-native-elements";
 import colors from "../assets/colors";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
-export default function HomeScreen({ navigation, route, addFav }) {
+export default function HomeScreen({
+  navigation,
+  route,
+  setLimit,
+  limit,
+  type,
+  color,
+  handleColors,
+}) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
-  const [limit, setLimit] = useState(25);
+  // const [limit, setLimit] = useState(25);
   const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [radius, setRadius] = useState(1500);
-  const [counter, setCounter] = useState(0);
-
-  let type = "";
-  let color = "";
-
+  // const [counter, setCounter] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,7 +76,6 @@ export default function HomeScreen({ navigation, route, addFav }) {
           // 1 - collect GPS coordinates of the user's device
           const location = await Location.getCurrentPositionAsync();
           // console.log(location);
-          // console.log(Location);
           setLat(location.coords.latitude);
           setLong(location.coords.longitude);
 
@@ -96,41 +99,10 @@ export default function HomeScreen({ navigation, route, addFav }) {
     fetchData();
   }, [search, toggleFilter, limit, skip, radius]);
 
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  const handleColors = (type) => {
-    // console.log(type);
-    // let color = "";
-    if (type === "veg-options") {
-      return (color = "tomato");
-    } else if (type === "vegan") {
-      return (color = "green");
-    } else if (type === "vegetarian") {
-      return (color = "purple");
-    } else if (type === "Veg Store") {
-      return (color = "navy");
-    } else if (type === "Ice Cream") {
-      return (color = "yellow");
-    } else if (type === "Other") {
-      return (color = "linen");
-    } else if (type === "Health Store") {
-      return (color = "white");
-    } else if (type === "Organization") {
-      return (color = "tan");
-    } else if (type === "Professional") {
-      return (color = "turquoise");
-    } else if (type === "Bakery") {
-      return (color = "wheat");
-    } else {
-      return (color = "blue");
-    }
-  };
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   // SEARCH
   const handleSearchResto = (text) => {
     if (text) {
-      // text.preventDefault();
       setSearch(text);
-      // console.log(text);
     } else {
       return false;
     }
@@ -145,7 +117,7 @@ export default function HomeScreen({ navigation, route, addFav }) {
         padding: 16,
         height:
           Platform.OS === "ios"
-            ? windowHeight / 2
+            ? windowHeight * 0.75
             : windowHeight * 0.125 * limit + windowHeight * 0.04,
       }}
     >
@@ -184,12 +156,11 @@ export default function HomeScreen({ navigation, route, addFav }) {
           />
         </ScrollView>
         <FlatListContents
-          data={data}
+          dataFlat={data}
           navigation={navigation}
           setLimit={setLimit}
           limit={limit}
           handleColors={handleColors}
-          addFav={addFav}
         />
       </View>
     </View>

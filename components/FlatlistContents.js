@@ -1,51 +1,56 @@
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-import React from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   Text,
   Platform,
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Image,
   View,
-  ActivityIndicator,
+  // ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
 
 const FlatListContent = ({
-  data,
+  dataFlat,
   navigation,
   handleColors,
   setLimit,
   limit,
-  addFav,
-  // isLoading,
-  // renderFooter,
 }) => {
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const handleLoadMore = () => {
-    setLimit(limit + 20);
+    console.log(limit);
+    setIsLoadingMore(true);
+    if (limit >= 65) setIsLoadingMore(false);
+    if (isLoadingMore) {
+      setLimit(limit + 20);
+      setIsLoadingMore(false);
+    }
   };
-  const renderFooter = () => {
-    return isLoading ? (
-      <View style={{ height: 50 }}>
-        <ActivityIndicator
-          size="large"
-          color="green"
-          style={styles.activityIndicator}
-        />
-      </View>
-    ) : null;
-  };
+  // const renderFooter = () => {
+  //   return isLoadingMore ? (
+  //     <View style={{ marginTop: 0, height: 50 }}>
+  //       <ActivityIndicator
+  //         size="large"
+  //         color="green"
+  //         style={styles.activityIndicator}
+  //       />
+  //     </View>
+  //   ) : null;
+  // };
   return (
     <>
       {Platform.OS === "ios" ? (
         <FlatList
-          data={data}
+          data={dataFlat}
           keyExtractor={(item) => String(item.placeId)}
           renderItem={({ item }) => {
-            // console.log("TYPE----------", type);
             return (
               <>
                 <TouchableOpacity
@@ -70,9 +75,7 @@ const FlatListContent = ({
                       <Text style={styles.flatListText}>{item.name}</Text>
                       <Text style={styles.flatListText}>{item.type}</Text>
                     </View>
-
                     <Text style={styles.flatListText}>{item.rating}</Text>
-
                     <Text style={styles.flatListText} numberOfLines={2}>
                       {item.description}
                     </Text>
@@ -88,7 +91,6 @@ const FlatListContent = ({
         <FlatList
           data={data}
           keyExtractor={(item) => String(item.placeId)}
-          // ItemSeparatorComponent={ItemSeparatorView}
           renderItem={({ item }) => {
             return (
               <>
@@ -114,9 +116,7 @@ const FlatListContent = ({
                       <Text style={styles.flatListText}>{item.name}</Text>
                       <Text style={styles.flatListText}>{item.type}</Text>
                     </View>
-
                     <Text style={styles.flatListText}>{item.rating}</Text>
-
                     <Text style={styles.flatListText} numberOfLines={2}>
                       {item.description}
                     </Text>

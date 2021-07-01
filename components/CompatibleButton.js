@@ -10,7 +10,7 @@ const CompatibleButton = ({
   styleText,
   styleButton,
 }) => {
-  console.log(type);
+  // console.log(type);
   return (
     <>
       {Platform.OS === "ios" ? (
