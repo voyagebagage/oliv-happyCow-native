@@ -33,7 +33,7 @@ export default function YummiestsScreen({
         const stored = await AsyncStorage.getItem("restaurant");
         const storedRes = JSON.parse(stored);
         if (storedRes !== null) {
-          console.log("-------------------1-------------------");
+          // console.log("-------------------1-------------------");
           console.log("storedRes--------------------", storedRes);
 
           // setIsLoading(false);
