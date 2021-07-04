@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as Location from "expo-location";
 
 // import * as React from "react";
@@ -50,22 +50,30 @@ const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 export default function HomeScreen({
   navigation,
   route,
+  isLoading,
+  setIsLoading,
   setLimit,
   limit,
+  skip,
+  setSkip,
   type,
   color,
   handleColors,
 }) {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [flatList, setFlatList] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
   // const [limit, setLimit] = useState(25);
-  const [skip, setSkip] = useState(0);
+  // const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [radius, setRadius] = useState(1500);
+  const [render, setRender] = useState();
   // const [counter, setCounter] = useState(0);
+  const callbackD = useCallback(() => setData([]), [setData]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -155,11 +163,14 @@ export default function HomeScreen({
             styleText={styles.buttonColorRed}
           />
         </ScrollView>
+
         <FlatListContents
-          dataFlat={data}
+          data={data}
           navigation={navigation}
           setLimit={setLimit}
           limit={limit}
+          skip={skip}
+          setSkip={setSkip}
           handleColors={handleColors}
         />
       </View>

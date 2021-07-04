@@ -1,7 +1,8 @@
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+
 import {
   TouchableOpacity,
   Text,
@@ -14,24 +15,53 @@ import {
   // ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
+import PureCompFlatlist from "./PureCompFlatlist";
 
 const FlatListContent = ({
-  dataFlat,
+  data,
+  isLoading,
+  setIsLoading,
   navigation,
   handleColors,
   setLimit,
   limit,
+  skip,
+  setSkip,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  // const [loader, setLoader] = useState(false);
 
+  // const data = limit;
   const handleLoadMore = () => {
     console.log(limit);
+    console.log(skip);
     setIsLoadingMore(true);
-    if (limit >= 65) setIsLoadingMore(false);
-    if (isLoadingMore) {
-      setLimit(limit + 20);
+    if (limit > 30) setIsLoadingMore(false);
+    if (!isLoading && isLoadingMore) {
+      // if (limit >= 20) setSkip(skip + 10);
+      setLimit(limit + 10);
+
+      // if (limit <= 20) setSkip(0);
       setIsLoadingMore(false);
     }
+  };
+
+  // const loadData = async () => {
+  //   setLoader(true);
+  //   const resp = await data;
+  //   setLoader(false);
+  // };
+
+  // const renderMemo = useMemo(() => renderItem, []);
+
+  const renderItem = ({ item }) => {
+    return (
+      <PureCompFlatlist
+        item={item}
+        handleColors={handleColors}
+        navigation={navigation}
+      />
+    );
   };
   // const renderFooter = () => {
   //   return isLoadingMore ? (
@@ -48,43 +78,21 @@ const FlatListContent = ({
     <>
       {Platform.OS === "ios" ? (
         <FlatList
-          data={dataFlat}
+          data={data}
           keyExtractor={(item) => String(item.placeId)}
-          renderItem={({ item }) => {
-            return (
-              <>
-                <TouchableOpacity
-                  style={styles.flatList}
-                  onPress={() =>
-                    navigation.navigate("Restaurant", {
-                      id: item.placeId,
-                      name: item.name,
-                      description: item.description,
-                      rating: item.rating,
-                      thumbnail: item.thumbnail,
-                      color: handleColors(item.type),
-                    })
-                  }
-                >
-                  <Image
-                    style={styles.flatListPic}
-                    source={{ uri: item.thumbnail }}
-                  />
-                  <View style={styles.flatListContent}>
-                    <View style={styles.flatListNameType}>
-                      <Text style={styles.flatListText}>{item.name}</Text>
-                      <Text style={styles.flatListText}>{item.type}</Text>
-                    </View>
-                    <Text style={styles.flatListText}>{item.rating}</Text>
-                    <Text style={styles.flatListText} numberOfLines={2}>
-                      {item.description}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </>
-            );
+          renderItem={renderItem}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={20}
+          initialNumToRender={5}
+          getItemLayout={(data, index) => {
+            return {
+              length: styles.flatList.height,
+              offset: 25 * styles.flatList.height,
+              index,
+            };
           }}
           onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
           // ListFooterComponent={renderFooter}
         />
       ) : (

@@ -30,14 +30,14 @@ export default function YummiestsScreen({
   useEffect(() => {
     const load = async () => {
       try {
-        const stored = await AsyncStorage.getItem("restaurant");
+        const stored = await AsyncStorage.getItem("favorites");
         const storedRes = JSON.parse(stored);
         if (storedRes !== null) {
-          // console.log("-------------------1-------------------");
+          console.log("-------------------1-------------------");
           console.log("storedRes--------------------", storedRes);
 
           // setIsLoading(false);
-          return favRestaurant.push(storedRes);
+          favRestaurant.push(storedRes);
         }
         console.log("--------------REsss-------------", favRestaurant);
       } catch (error) {
@@ -46,7 +46,7 @@ export default function YummiestsScreen({
       console.log("Done.");
     };
     load();
-  }, []);
+  }, [favRestaurant]);
 
   const removeYum = async () => {
     try {

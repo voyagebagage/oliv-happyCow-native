@@ -32,7 +32,9 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const [limit, setLimit] = useState(25);
+  // const [isLoading, setIsLoading] = useState(true);
+  const [limit, setLimit] = useState(10);
+  const [skip, setSkip] = useState(0);
   const setToken = async (token) => {
     if (token) {
       AsyncStorage.setItem("userToken", token);
@@ -158,8 +160,12 @@ export default function App() {
                         {(props) => (
                           <HomeScreen
                             {...props}
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
                             setLimit={setLimit}
                             limit={limit}
+                            setSkip={setSkip}
+                            skip={skip}
                             type={type}
                             color={color}
                             handleColors={handleColors}
