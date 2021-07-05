@@ -118,64 +118,56 @@ export default function HomeScreen({
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: drawerGrey,
-        padding: 16,
-        height:
-          Platform.OS === "ios"
-            ? windowHeight * 0.75
-            : windowHeight * 0.125 * limit + windowHeight * 0.04,
-      }}
-    >
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContent}
-        >
-          <CompatibleButton
-            type={""}
-            buttonName={"ALL"}
-            setToggleFilter={setToggleFilter}
-            styleButton={styles.buttonFlatListAll}
-            styleText={styles.buttonAll}
-          />
-          <CompatibleButton
-            type={"vegan"}
-            buttonName={"Vegan"}
-            setToggleFilter={setToggleFilter}
-            styleButton={styles.buttonFlatList}
-            styleText={styles.buttonColorGreen}
-          />
-          <CompatibleButton
-            type={"vegetarian"}
-            buttonName={"Vegetarian"}
-            setToggleFilter={setToggleFilter}
-            styleButton={styles.buttonFlatList}
-            styleText={styles.buttonColorPurple}
-          />
-          <CompatibleButton
-            type={"veg-options"}
-            buttonName={"Veg-option"}
-            setToggleFilter={setToggleFilter}
-            styleButton={styles.buttonFlatList}
-            styleText={styles.buttonColorRed}
-          />
-        </ScrollView>
+  const renderContent = () =>
+    !isLoading ? (
+      <View style={styles.firstParentViewRenderContent}>
+        <View style={styles.container}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
+          >
+            <CompatibleButton
+              type={""}
+              buttonName={"ALL"}
+              setToggleFilter={setToggleFilter}
+              styleButton={styles.buttonFlatListAll}
+              styleText={styles.buttonAll}
+            />
+            <CompatibleButton
+              type={"vegan"}
+              buttonName={"Vegan"}
+              setToggleFilter={setToggleFilter}
+              styleButton={styles.buttonFlatList}
+              styleText={styles.buttonColorGreen}
+            />
+            <CompatibleButton
+              type={"vegetarian"}
+              buttonName={"Vegetarian"}
+              setToggleFilter={setToggleFilter}
+              styleButton={styles.buttonFlatList}
+              styleText={styles.buttonColorPurple}
+            />
+            <CompatibleButton
+              type={"veg-options"}
+              buttonName={"Veg-option"}
+              setToggleFilter={setToggleFilter}
+              styleButton={styles.buttonFlatList}
+              styleText={styles.buttonColorRed}
+            />
+          </ScrollView>
 
-        <FlatListContents
-          data={data}
-          navigation={navigation}
-          setLimit={setLimit}
-          limit={limit}
-          skip={skip}
-          setSkip={setSkip}
-          handleColors={handleColors}
-        />
+          <FlatListContents
+            data={data}
+            navigation={navigation}
+            setLimit={setLimit}
+            limit={limit}
+            skip={skip}
+            setSkip={setSkip}
+            handleColors={handleColors}
+          />
+        </View>
       </View>
-    </View>
-  );
+    ) : null;
 
   const sheetRef = React.useRef(null);
   //////////////////////////^^^^^^^^^^^^^^^^^^^^^^\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -360,6 +352,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     // alignItems: "center",
     // margin: 10,
+  },
+  //---------------------//////----------------------------------
+  firstParentViewRenderContent: {
+    backgroundColor: drawerGrey,
+    padding: 16,
+    height:
+      Platform.OS === "ios"
+        ? windowHeight * 0.75
+        : windowHeight * 0.125 * limit + windowHeight * 0.04,
   },
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|FLATLIST HEADER, buttons etc|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

@@ -29,28 +29,17 @@ const FlatListContent = ({
   setSkip,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  // const [loader, setLoader] = useState(false);
 
-  // const data = limit;
   const handleLoadMore = () => {
-    console.log(limit);
-    console.log(skip);
+    console.trace("handleMore");
+    // console.log(limit);
     setIsLoadingMore(true);
-    if (limit > 30) setIsLoadingMore(false);
-    if (!isLoading && isLoadingMore) {
-      // if (limit >= 20) setSkip(skip + 10);
+    // if (limit > 30) setIsLoadingMore(false);
+    if (!isLoading) {
       setLimit(limit + 10);
-
-      // if (limit <= 20) setSkip(0);
       setIsLoadingMore(false);
     }
   };
-
-  // const loadData = async () => {
-  //   setLoader(true);
-  //   const resp = await data;
-  //   setLoader(false);
-  // };
 
   // const renderMemo = useMemo(() => renderItem, []);
 
@@ -84,10 +73,11 @@ const FlatListContent = ({
           removeClippedSubviews={true}
           maxToRenderPerBatch={20}
           initialNumToRender={5}
+          windowSize={limit}
           getItemLayout={(data, index) => {
             return {
               length: styles.flatList.height,
-              offset: 25 * styles.flatList.height,
+              offset: limit * styles.flatList.height,
               index,
             };
           }}
