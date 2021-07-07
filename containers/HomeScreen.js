@@ -75,10 +75,13 @@ export default function HomeScreen({
   const callbackD = useCallback(() => setData([]), [setData]);
 
   useEffect(() => {
+    // const abortFetch = new AbortController();
+    let source = axios.CancelToken.source();
+
     const fetchData = async () => {
       try {
+        console.log("fetching");
         const { status } = await Location.requestForegroundPermissionsAsync();
-
         let response;
         if (status === "granted") {
           // 1 - collect GPS coordinates of the user's device
@@ -89,22 +92,44 @@ export default function HomeScreen({
 
           // 2 - make requests related to his location
           response = await axios.get(
-            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`
+            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
+            { cancelToken: source.token }
+            // { signal: abortFetch.signal }
           );
         } else {
           // one request w/ all the restaurants
           response = await axios.get(
-            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&limit=${limit}&skip=${skip}`
+            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&limit=${limit}&skip=${skip}`,
+            { cancelToken: source.token }
           );
         }
         setData(response.data);
         setIsLoading(false);
+
         // console.log(response.data);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("caught cancel");
+        } else {
+          setIsLoading(false);
+          console.log(error);
+        }
+        // if (error.name === "AbortError") {
+        //   console.log("Fecth Cancel caught");
+        // } else {
+        //   throw error;
+        // }
       }
     };
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    return () => {
+      // abortFetch.abort();
+      source.cancel();
+      console.log("cleanup");
+    };
   }, [search, toggleFilter, limit, skip, radius]);
 
   // SEARCH

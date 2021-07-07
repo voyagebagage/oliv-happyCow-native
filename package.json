@@ -37,7 +37,8 @@
     "urix": "^0.1.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "~7.9.0",
+    "react-devtools": "^4.13.5"
   },
   "private": true
 }

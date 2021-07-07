@@ -29,11 +29,20 @@ const FlatListContent = ({
   setSkip,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-
+  // const [page, setPage] = useState(skip + limit);
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.props.limit !== nextProps.limit) {
+  //     return true;
+  //   }
+  //   if (this.state.count !== nextState.count) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
   const handleLoadMore = () => {
-    console.trace("handleMore");
+    console.log("handleMore");
     // console.log(limit);
-    setIsLoadingMore(true);
+    // setIsLoadingMore(true);
     // if (limit > 30) setIsLoadingMore(false);
     if (!isLoading) {
       setLimit(limit + 10);
@@ -77,12 +86,12 @@ const FlatListContent = ({
           getItemLayout={(data, index) => {
             return {
               length: styles.flatList.height,
-              offset: limit * styles.flatList.height,
+              offset: 25 * styles.flatList.height,
               index,
             };
           }}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.2}
           // ListFooterComponent={renderFooter}
         />
       ) : (

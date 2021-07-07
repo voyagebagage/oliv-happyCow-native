@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RestaurantScreen({ navigation, route }) {
   // console.log("NAV", navigation.navigate);
   // console.log("couleur", route.params.color);
+
   const restaurant = route.params;
+  // const { borderColor } = route.params.color;
+  const resColor = route.params.color;
+  const [favRestaurants, setFavRestaurants] = useState([]);
+  const [isLoadingFav, setIsLoadingFav] = useState(true);
   // const [data, setData] = useState([]);
   // // console.log(restaurant);
   // useEffect(() => {
@@ -16,14 +21,99 @@ export default function RestaurantScreen({ navigation, route }) {
   //   e.preventDefault();
   //   setData(restaurant);
   // };
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const stored = await AsyncStorage.getItem("favorites");
+        const storedRes = JSON.parse(stored);
+        if (storedRes !== null) {
+          console.log("-------------------storedRes-------------------");
+          console.table(storedRes);
 
+          let newTab = [...storedRes];
+          console.log("-------------------newTab---LOAD----------------");
+          console.table(newTab);
+          setFavRestaurants(newTab);
+
+          // favRestaurants.push(newTab);
+          console.log(
+            "-------------------favRestaurants---LOAD----------------"
+          );
+
+          console.table(favRestaurants);
+          setIsLoadingFav(false);
+          // setIsLoading(false);
+          // return restaurants.push(storedRes);
+          alert("succes loading");
+        }
+        console.log([favRestaurants]);
+      } catch (error) {
+        console.log("Failed to load !");
+      }
+      console.log("Done.");
+    };
+    load();
+  }, [restaurant]);
+
+  const clearAsyncStorage = async () => {
+    await AsyncStorage.clear();
+    console.log("claear");
+  };
   const save = async (restaurant) => {
     try {
-      // console.log("-----1-----stringifiedFavs---", newTab, "------1------");
-      const stringFav = JSON.stringify(restaurant);
-      console.log("-----1-----STRFAV---", stringFav, "------1------");
+      // if (favRestaurants.length === 0) {
+      //   favRestaurants.push(restaurant);
+      // }
+      // if (favRestaurants.length !== 0) {
+      console.log(
+        "----------BEFORE--------favRestaurants------SAVE------------"
+      );
+      console.table(favRestaurants);
 
-      await AsyncStorage.setItem("favorites", stringFav);
+      let newTab = [...favRestaurants];
+      console.log("-------------------newTab---SAVE----------------");
+      console.table(newTab);
+      // console.log(restaurant.id);
+
+      // const NewTabFilter = (tab) => {
+      //   return tab.filter((elem) => elem.id.includes(restaurant.id));
+      // };
+      let alreadyInAsybcStorage = false;
+      newTab.forEach((e) => {
+        if (e.id === restaurant.id) {
+          alreadyInAsybcStorage = true;
+        }
+      });
+      // let alreadyInAsybcStorage = newTab.filter((elem) =>
+      //   elem.id.includes(restaurant.id)
+      // );
+      // NewTabFilter(newTab);
+      // console.log(NewTabFilter(newTab));
+      console.log(alreadyInAsybcStorage, "AL");
+
+      if (alreadyInAsybcStorage) {
+        alert("nope already Fave");
+      } else {
+        newTab.push(restaurant);
+        console.log("-------------------newTab---Save----------------");
+        console.table(newTab);
+        // let newTab=[...favRestaurants]
+
+        // setFavRestaurants(newTab);
+        favRestaurants.push(restaurant);
+        // }
+        // }
+        console.log(
+          "----------AFTER--------favRestaurants------SAVE------------"
+        );
+        console.table(favRestaurants);
+
+        const stringFav = JSON.stringify(favRestaurants);
+        console.log("------------------stringFav------------------");
+        console.table(stringFav);
+        await AsyncStorage.setItem("favorites", stringFav);
+        alert("succes update");
+      }
     } catch (error) {
       console.log("-------------you got a saving issue!-----------");
     }
@@ -38,23 +128,7 @@ export default function RestaurantScreen({ navigation, route }) {
     console.log("-------------REMOVED-----------");
   };
   return (
-    <View
-      style={{
-        // backgroundColor: purpleFltr,
-        color: "white",
-        fontWeight: "bold",
-
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        // position: "absolute",
-        // heigth: 300,
-        marginTop: 100,
-        borderWidth: 10,
-        borderColor: restaurant.color,
-        backgroundColor: restaurant.color,
-      }}
-    >
+    <View style={styles.mainView}>
       <Text>Hello resto</Text>
       <Text>{restaurant.id}</Text>
       <Text>{restaurant.name}</Text>
@@ -63,9 +137,23 @@ export default function RestaurantScreen({ navigation, route }) {
       <Text>{restaurant.description}</Text>
       <Button title={"add Yummies"} onPress={() => save(restaurant)} />
       <Button title={"remove Yummies"} onPress={() => removeRes()} />
+      <Button title={"CLEAR"} onPress={() => clearAsyncStorage()} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainView: {
+    color: "white",
+    fontWeight: "bold",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 100,
+    borderWidth: 10,
+    // backgroundColor: resColor,
+  },
+});
 // Pour stocker un favori (qu'on appellera newFav) :
 
 // try {
