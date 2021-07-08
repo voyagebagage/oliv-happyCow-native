@@ -13,6 +13,7 @@ import {
   StyleSheet,
 } from "react-native";
 import colors from "../assets/colors";
+import { is } from "core-js/core/object";
 const { drawerGrey, lightGrey } = colors;
 
 export default function YummiestsScreen({
@@ -49,9 +50,9 @@ export default function YummiestsScreen({
 
           console.table(favRestaurants);
           setIsLoadingFav(false);
-          // setIsLoading(false);
+          setIsLoading(false);
           // return restaurants.push(storedRes);
-          alert("succes loading");
+          // alert("succes loading");
         }
         console.log("--------------REsss-------------", favRestaurants);
       } catch (error) {
@@ -69,7 +70,7 @@ export default function YummiestsScreen({
       console.log("remove failed");
     }
   };
-  return !isLoading ? (
+  return !isLoadingFav ? (
     <View style={{ backgroundColor: drawerGrey, flex: 1 }}>
       <Text style={{ color: "white", height: 24 }}>
         {favRestaurants.length}

@@ -73,7 +73,7 @@ export default function HomeScreen({
   const [render, setRender] = useState();
   // const [counter, setCounter] = useState(0);
   const callbackD = useCallback(() => setData([]), [setData]);
-
+  // setIsLoading(true);
   useEffect(() => {
     // const abortFetch = new AbortController();
     let source = axios.CancelToken.source();

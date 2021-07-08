@@ -3,7 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Button, Text, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function RestaurantScreen({ navigation, route }) {
+export default function RestaurantScreen({
+  navigation,
+  route,
+  isLoading,
+  setIsLoading,
+}) {
   // console.log("NAV", navigation.navigate);
   // console.log("couleur", route.params.color);
 
@@ -21,6 +26,7 @@ export default function RestaurantScreen({ navigation, route }) {
   //   e.preventDefault();
   //   setData(restaurant);
   // };
+  // setIsLoading(true);
   useEffect(() => {
     const load = async () => {
       try {
@@ -41,10 +47,10 @@ export default function RestaurantScreen({ navigation, route }) {
           );
 
           console.table(favRestaurants);
-          setIsLoadingFav(false);
-          // setIsLoading(false);
+          // setIsLoadingFav(false);
+          setIsLoading(false);
           // return restaurants.push(storedRes);
-          alert("succes loading");
+          // alert("succes loading");
         }
         console.log([favRestaurants]);
       } catch (error) {
@@ -84,11 +90,7 @@ export default function RestaurantScreen({ navigation, route }) {
           alreadyInAsybcStorage = true;
         }
       });
-      // let alreadyInAsybcStorage = newTab.filter((elem) =>
-      //   elem.id.includes(restaurant.id)
-      // );
-      // NewTabFilter(newTab);
-      // console.log(NewTabFilter(newTab));
+
       console.log(alreadyInAsybcStorage, "AL");
 
       if (alreadyInAsybcStorage) {
@@ -101,8 +103,7 @@ export default function RestaurantScreen({ navigation, route }) {
 
         // setFavRestaurants(newTab);
         favRestaurants.push(restaurant);
-        // }
-        // }
+
         console.log(
           "----------AFTER--------favRestaurants------SAVE------------"
         );
@@ -121,13 +122,58 @@ export default function RestaurantScreen({ navigation, route }) {
   };
   const removeRes = async () => {
     try {
-      await AsyncStorage.removeItem("restaurant");
+      let newTab = [...favRestaurants];
+      let alreadyInAsybcStorage = false;
+      let collectIndex = 0;
+      for (let index = 0; index < newTab.length; index++) {
+        if (newTab[index].id === restaurant.id) {
+          alreadyInAsybcStorage = true;
+          // newTab.splice(index, 1);
+          favRestaurants.splice(index, 1);
+          // setFavRestaurants([]);
+
+          // setFavRestaurants([]);
+
+          console.log("-------------------newTab---IN----------------");
+          console.table(newTab);
+          console.log(
+            "----------BEFORE--------favRestaurants------RMV------------"
+          );
+          console.table(favRestaurants);
+        }
+      }
+      // newTab.forEach((e) => {
+      //   if (e.id === restaurant.id) {
+      //     alreadyInAsybcStorage = true;
+      //     index = newTab.indexOf(e.id);
+      //     console.log(index);
+      //   }
+      // });
+
+      if (!alreadyInAsybcStorage) {
+        alert("NOT in Fave");
+      } else {
+        //   newTab.splice(collectIndex, 1);
+        console.log("-------------------newTab---AFTER SPL----------------");
+        console.table(newTab);
+        // await AsyncStorage.removeItem("favorites");
+        // setFavRestaurants(newTab);
+        console.log(
+          "----------AFTER--------favRestaurants------RMV------------"
+        );
+        console.table(favRestaurants);
+        const stringFav = JSON.stringify(favRestaurants);
+        console.log("------------------stringFav------------------");
+        console.table(stringFav);
+        await AsyncStorage.setItem("favorites", stringFav);
+        alert("succes remove");
+      }
     } catch (error) {
       console.log("-----------remove failed-----------");
     }
     console.log("-------------REMOVED-----------");
   };
-  return (
+  return !isLoading ? (
     <View style={styles.mainView}>
       <Text>Hello resto</Text>
       <Text>{restaurant.id}</Text>
@@ -139,7 +185,7 @@ export default function RestaurantScreen({ navigation, route }) {
       <Button title={"remove Yummies"} onPress={() => removeRes()} />
       <Button title={"CLEAR"} onPress={() => clearAsyncStorage()} />
     </View>
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({

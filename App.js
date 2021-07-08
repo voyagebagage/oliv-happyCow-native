@@ -187,7 +187,13 @@ export default function App() {
                         //   }
                         // }
                       >
-                        {(props) => <RestaurantScreen {...props} />}
+                        {(props) => (
+                          <RestaurantScreen
+                            {...props}
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
+                          />
+                        )}
                       </Stack.Screen>
                       {/* <Stack.Screen
                         name="Profile"
@@ -202,9 +208,9 @@ export default function App() {
                 </Tab.Screen>
 
                 <Tab.Screen
-                  name="Yammiests"
+                  name="Yummiests"
                   options={{
-                    tabBarLabel: "Yammiests",
+                    tabBarLabel: "Yummiests",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialIcons name="favorite" size={26} color={color} />
                     ),
