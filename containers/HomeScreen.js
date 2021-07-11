@@ -47,7 +47,7 @@ import { SearchBar } from "react-native-elements";
 import colors from "../assets/colors";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
-export default function HomeScreen({
+function HomeScreen({
   navigation,
   route,
   isLoading,
@@ -75,9 +75,9 @@ export default function HomeScreen({
   const callbackD = useCallback(() => setData([]), [setData]);
   // setIsLoading(true);
   useEffect(() => {
-    // const abortFetch = new AbortController();
-    let source = axios.CancelToken.source();
-
+    const abortFetch = new AbortController();
+    // const CancelToken = axios.CancelToken;
+    // let source = axios.CancelToken.source();
     const fetchData = async () => {
       try {
         console.log("fetching");
@@ -93,8 +93,8 @@ export default function HomeScreen({
           // 2 - make requests related to his location
           response = await axios.get(
             `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
-            { cancelToken: source.token }
-            // { signal: abortFetch.signal }
+            // { cancelToken: source.token }
+            { signal: abortFetch.signal }
           );
         } else {
           // one request w/ all the restaurants
@@ -103,32 +103,34 @@ export default function HomeScreen({
             { cancelToken: source.token }
           );
         }
+        console.log("FectchCAncel got cancel");
         setData(response.data);
         setIsLoading(false);
 
         // console.log(response.data);
       } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log("caught cancel");
-        } else {
-          setIsLoading(false);
-          console.log(error);
-        }
-        // if (error.name === "AbortError") {
-        //   console.log("Fecth Cancel caught");
+        // if (axios.isCancel(error)) {
+        //   console.log("caught cancel----------------");
         // } else {
+        //   setIsLoading(false);
         //   throw error;
+        //   console.log(error);
         // }
+        if (error.name === "AbortError") {
+          console.log("Fecth Cancel caught");
+        } else {
+          throw error;
+        }
       }
     };
-    setTimeout(() => {
-      fetchData();
-    }, 1000);
+    // setTimeout(() => {
+    fetchData();
+    // }, 500);
 
     return () => {
-      // abortFetch.abort();
-      source.cancel();
-      console.log("cleanup");
+      abortFetch.abort();
+      console.log("cleanup-unmount");
+      // source.cancel();
     };
   }, [search, toggleFilter, limit, skip, radius]);
 
@@ -336,6 +338,8 @@ export default function HomeScreen({
     </>
   );
 }
+export default React.memo(HomeScreen);
+
 const styles = StyleSheet.create({
   activityIndicator: {
     marginTop: windowHeight * 0.15,

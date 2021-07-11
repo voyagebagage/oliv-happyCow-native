@@ -32,8 +32,10 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [favRestaurants, setFavRestaurants] = useState([]);
+
   // const [isLoading, setIsLoading] = useState(true);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(7);
   const [skip, setSkip] = useState(0);
   const setToken = async (token) => {
     if (token) {
@@ -44,6 +46,7 @@ export default function App() {
 
     setUserToken(token);
   };
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   let type = "";
   let color = "";
@@ -192,6 +195,8 @@ export default function App() {
                             {...props}
                             isLoading={isLoading}
                             setIsLoading={setIsLoading}
+                            favRestaurants={favRestaurants}
+                            setFavRestaurants={setFavRestaurants}
                           />
                         )}
                       </Stack.Screen>
@@ -242,6 +247,8 @@ export default function App() {
                             {...props}
                             isLoading={isLoading}
                             setIsLoading={isLoading}
+                            favRestaurants={favRestaurants}
+                            setFavRestaurants={setFavRestaurants}
                             setLimit={setLimit}
                             limit={limit}
                             type={type}

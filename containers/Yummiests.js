@@ -13,10 +13,9 @@ import {
   StyleSheet,
 } from "react-native";
 import colors from "../assets/colors";
-import { is } from "core-js/core/object";
 const { drawerGrey, lightGrey } = colors;
 
-export default function YummiestsScreen({
+function YummiestsScreen({
   navigation,
   setLimit,
   limit,
@@ -25,10 +24,12 @@ export default function YummiestsScreen({
   type,
   color,
   handleColors,
+  favRestaurants,
+  setFavRestaurants,
 }) {
-  const [favRestaurants, setFavRestaurants] = useState([]);
+  // const [favRestaurants, setFavRestaurants] = useState([]);
   const [isLoadingFav, setIsLoadingFav] = useState(true);
-
+  // const restaurants = favRestaurants;
   useEffect(() => {
     const load = async () => {
       try {
@@ -41,9 +42,8 @@ export default function YummiestsScreen({
           let newTab = [...storedRes];
           console.log("-------------------newTab---LOAD----------------");
           console.table(newTab);
-          setFavRestaurants(newTab);
-
-          // favRestaurants.push(newTab);
+          // setFavRestaurants(newTab);
+          favRestaurants.push(newTab);
           console.log(
             "-------------------favRestaurants---LOAD----------------"
           );
@@ -126,6 +126,7 @@ export default function YummiestsScreen({
     </View>
   ) : null;
 }
+export default YummiestsScreen;
 const styles = StyleSheet.create({
   activityIndicator: {
     marginTop: windowHeight * 0.15,

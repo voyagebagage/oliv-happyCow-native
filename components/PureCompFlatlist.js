@@ -11,22 +11,61 @@ import {
   View,
   // ActivityIndicator,
 } from "react-native";
+// import { FixedSizeList as List } from 'react-window';
 
-export class PureCompFlatlist extends PureComponent {
+class PureCompFlatlist extends React.PureComponent {
+  constructor() {
+    super();
+    // this.state = { navigationN: {} };
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(nextProps);
+  //   if (nextProps !== this.props) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }}
+  // if (nextProps.navigation.navigate === this.props.navigation.navigate) {
+  //   console.log("true");
+
+  //   return true;
+  // } else {
+  //   console.log("false");
+
+  //   return false;
+  // }
+
   render() {
+    console.log("render");
+
     const { item, handleColors, navigation } = this.props;
+    // console.log(this.props);
+
     return (
       <TouchableOpacity
         style={styles.flatList}
-        onPress={() =>
-          navigation.navigate("Restaurant", {
-            id: item.placeId,
-            name: item.name,
-            description: item.description,
-            rating: item.rating,
-            thumbnail: item.thumbnail,
-            color: handleColors(item.type),
-          })
+        onPress={
+          () =>
+            navigation.navigate("Restaurant", {
+              id: item.placeId,
+              name: item.name,
+              description: item.description,
+              rating: item.rating,
+              thumbnail: item.thumbnail,
+              color: handleColors(item.type),
+            })
+          // this.setState(
+          //   {
+          //   navigationN: navigation.navigate("Restaurant", {
+          //     id: item.placeId,
+          //     name: item.name,
+          //     description: item.description,
+          //     rating: item.rating,
+          //     thumbnail: item.thumbnail,
+          //     color: handleColors(item.type),
+          //   }),
+          // })
         }
       >
         <Image style={styles.flatListPic} source={{ uri: item.thumbnail }} />

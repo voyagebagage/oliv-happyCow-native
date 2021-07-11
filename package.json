@@ -22,9 +22,10 @@
     "expo-status-bar": "~1.0.4",
     "geolib": "^3.3.1",
     "isomorphic-fetch": "^2.2.1",
-    "react": "16.13.1",
+    "native": "^0.3.3",
+    "react": "^17.0.2",
     "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native": "~0.63.4",
     "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-maps": "0.27.1",
@@ -33,12 +34,12 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-web": "~0.13.12",
+    "react-window": "^1.8.6",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "urix": "^0.1.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0",
-    "react-devtools": "^4.13.5"
+    "@babel/core": "~7.9.0"
   },
   "private": true
 }
