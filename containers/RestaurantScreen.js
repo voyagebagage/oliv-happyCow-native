@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import { Button, Text, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { type, color, handleColors } from "../components/lib";
+// import { useRoute } from "@react-navigation/native";
+// const route = useRoute();
+// let type = route.params.type;
+// const resColor = handleColors(type);
 function RestaurantScreen({
   navigation,
   route,
@@ -12,7 +16,10 @@ function RestaurantScreen({
   setFavRestaurants,
 }) {
   const restaurant = route.params;
-  const resColor = route.params.color;
+  const resColor = handleColors(route.params.type);
+  // const type = route.params.type;
+  // export let colorExp = route.params.color;
+
   const [isLoadingFav, setIsLoadingFav] = useState(true);
 
   useEffect(() => {
@@ -71,7 +78,6 @@ function RestaurantScreen({
     try {
       let newTab = [...favRestaurants];
       let alreadyInAsybcStorage = false;
-      let collectIndex = 0;
       for (let index = 0; index < newTab.length; index++) {
         if (newTab[index].id === restaurant.id) {
           alreadyInAsybcStorage = true;
@@ -121,68 +127,3 @@ const styles = StyleSheet.create({
     // backgroundColor: resColor,
   },
 });
-// Pour stocker un favori (qu'on appellera newFav) :
-
-// try {
-//  let favorites = await AsyncStorage.getItem("favorites"); // recupérer le tableau de favoris stringifié
-//  let parsedFav = JSON.parse(favorites) // le retransformer en tableau
-//  let newTab = [...parsedFav]; // le copier
-//  let isAlreadyFavorite = false;
-//  for (let i=0; i < newTab.length ; i++) {
-//    if (newTab[i].id === newFav.id) {
-//       isAlreadyFavorite = true
-//       }
-//    }
-//    if (!isAlreadyFavorite) {
-//      newTab.push(newFav);
-//     }
-//    let stringifiedFavs = JSON.stringify(newTab);
-//    await AsyncStorage.setItem("favorites", stringifiedFavs);
-//  } catch (error) {
-//   console.log("you got a saving issue!");
-// }
-// @Atha00
-
-// Atha00 commented 4 hours ago
-// Pour le retirer, c'est le même principe sauf que dans la boucle on fera :
-
-// for (let i=0; i < newTab.length ; i++) {
-//    if (newTab[i].id === newFav.id) {
-//       newTab.splice(i, 1)
-//       }
-//    }
-// let favorites = await AsyncStorage.getItem("favorites");
-// // console.log("-----000--FAV------", favorites, "------00------");
-// console.log("-----015------");
-
-// let parsedFav = JSON.parse(favorites);
-// console.log("-----1------");
-// // if (parsedFav !== null) {
-// // console.log("-----000--parseFav------", parsedFav, "------00------");
-// let newTab = [...parsedFav];
-// console.log("-----2------");
-
-// // console.log("-----1--------", [newTab], "------1------");
-// // if (newTab !== null) {
-// let isAlreadyFavorite = false;
-// for (let i = 0; i < newTab.length; i++) {
-//   console.log("-----x------");
-//   if (newTab[i].id === restaurant.id) {
-//     console.log("-----y------");
-//     isAlreadyFavorite = true;
-//   }
-// }
-// if (!isAlreadyFavorite) {
-//   console.log("-----3------");
-//   // console.log("-----1-----alre---", isAlreadyFavorite, "------1------");
-//   newTab.push(restaurant);
-//   await AsyncStorage.setItem("favorites", JSON.stringify(newTab));
-// } else {
-//   console.log("-----4------");
-//   await AsyncStorage.setItem("favorites", JSON.stringify(restaurant));
-// }
-// // }
-// // console.log("-----1-----stringifiedFavs---", stringFav, "------1------");
-// console.log("-----5------");
-
-// // }

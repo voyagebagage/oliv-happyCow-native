@@ -17,7 +17,6 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 import splasHappy from "./assets/splasHappy.png";
-// import {  } from '@expo/vector-icons';
 import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 
 import { StyleSheet, Image } from "react-native";
@@ -48,36 +47,36 @@ export default function App() {
   };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  let type = "";
-  let color = "";
-  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-  const handleColors = (type) => {
-    // console.log(type);
-    // let color = "";
-    if (type === "veg-options") {
-      return (color = "tomato");
-    } else if (type === "vegan") {
-      return (color = "green");
-    } else if (type === "vegetarian") {
-      return (color = "purple");
-    } else if (type === "Veg Store") {
-      return (color = "navy");
-    } else if (type === "Ice Cream") {
-      return (color = "yellow");
-    } else if (type === "Other") {
-      return (color = "linen");
-    } else if (type === "Health Store") {
-      return (color = "white");
-    } else if (type === "Organization") {
-      return (color = "tan");
-    } else if (type === "Professional") {
-      return (color = "turquoise");
-    } else if (type === "Bakery") {
-      return (color = "wheat");
-    } else {
-      return (color = "blue");
-    }
-  };
+  // let type = "";
+  // let color = "";
+  // //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+  // const handleColors = (type) => {
+  //   // console.log(type);
+  //   // let color = "";
+  //   if (type === "veg-options") {
+  //     return (color = "tomato");
+  //   } else if (type === "vegan") {
+  //     return (color = "green");
+  //   } else if (type === "vegetarian") {
+  //     return (color = "purple");
+  //   } else if (type === "Veg Store") {
+  //     return (color = "navy");
+  //   } else if (type === "Ice Cream") {
+  //     return (color = "yellow");
+  //   } else if (type === "Other") {
+  //     return (color = "linen");
+  //   } else if (type === "Health Store") {
+  //     return (color = "white");
+  //   } else if (type === "Organization") {
+  //     return (color = "tan");
+  //   } else if (type === "Professional") {
+  //     return (color = "turquoise");
+  //   } else if (type === "Bakery") {
+  //     return (color = "wheat");
+  //   } else {
+  //     return (color = "blue");
+  //   }
+  // };
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -169,9 +168,9 @@ export default function App() {
                             limit={limit}
                             setSkip={setSkip}
                             skip={skip}
-                            type={type}
-                            color={color}
-                            handleColors={handleColors}
+                            // type={type}
+                            // color={color}
+                            // handleColors={handleColors}
                           />
                         )}
                       </Stack.Screen>
@@ -251,9 +250,9 @@ export default function App() {
                             setFavRestaurants={setFavRestaurants}
                             setLimit={setLimit}
                             limit={limit}
-                            type={type}
-                            color={color}
-                            handleColors={handleColors}
+                            // type={type}
+                            // color={color}
+                            // handleColors={handleColors}
                           />
                         )}
                       </Stack.Screen>

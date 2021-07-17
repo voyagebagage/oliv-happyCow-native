@@ -79,7 +79,7 @@ class FlatListContent extends React.PureComponent {
   //   ) : null;
   // };
   render() {
-    console.log("renderFLAT");
+    // console.log("renderFLAT");
 
     const {
       data,

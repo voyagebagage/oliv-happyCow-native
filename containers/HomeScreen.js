@@ -14,7 +14,7 @@ import HappyCowLogoText from "../assets/HappyCowLogoText.png";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 
-import CompatibleButton from "../components/CompatibleButton";
+import CompatibleButtonList from "../components/CompatibleButtonList";
 import FlatListContents from "../components/FlatlistContents";
 
 import { Dimensions } from "react-native";
@@ -24,6 +24,9 @@ const windowHeight = Dimensions.get("window").height;
 
 import { isPointWithinRadius } from "geolib";
 
+import { type, color, handleColors } from "../components/lib";
+// let type = type;
+// let color = color;
 import {
   Button,
   Text,
@@ -56,28 +59,27 @@ function HomeScreen({
   limit,
   skip,
   setSkip,
-  type,
-  color,
-  handleColors,
+  // type,
+  // color,
+  // handleColors,
 }) {
   const [data, setData] = useState([]);
   const [flatList, setFlatList] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
+  // const [typE, setTypE] = useState([]);
   // const [limit, setLimit] = useState(25);
   // const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [radius, setRadius] = useState(1500);
   const [render, setRender] = useState();
-  // const [counter, setCounter] = useState(0);
-  const callbackD = useCallback(() => setData([]), [setData]);
-  // setIsLoading(true);
+  // const callbackD = useCallback(() => setData([]), [setData]);
+
   useEffect(() => {
     const abortFetch = new AbortController();
-    // const CancelToken = axios.CancelToken;
-    // let source = axios.CancelToken.source();
+
     const fetchData = async () => {
       try {
         console.log("fetching");
@@ -92,30 +94,24 @@ function HomeScreen({
 
           // 2 - make requests related to his location
           response = await axios.get(
-            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
-            // { cancelToken: source.token }
+            `http://localhost:3500/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
             { signal: abortFetch.signal }
           );
         } else {
           // one request w/ all the restaurants
           response = await axios.get(
             `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&limit=${limit}&skip=${skip}`,
-            { cancelToken: source.token }
+            { signal: abortFetch.signal }
           );
         }
         console.log("FectchCAncel got cancel");
         setData(response.data);
+        // setTypE(response.data.type);
+        // console.log(typE);
         setIsLoading(false);
 
         // console.log(response.data);
       } catch (error) {
-        // if (axios.isCancel(error)) {
-        //   console.log("caught cancel----------------");
-        // } else {
-        //   setIsLoading(false);
-        //   throw error;
-        //   console.log(error);
-        // }
         if (error.name === "AbortError") {
           console.log("Fecth Cancel caught");
         } else {
@@ -123,9 +119,7 @@ function HomeScreen({
         }
       }
     };
-    // setTimeout(() => {
     fetchData();
-    // }, 500);
 
     return () => {
       abortFetch.abort();
@@ -153,33 +147,12 @@ function HomeScreen({
             style={styles.scrollView}
             contentContainerStyle={styles.scrollViewContent}
           >
-            <CompatibleButton
-              type={""}
-              buttonName={"ALL"}
+            <CompatibleButtonList
+              toggleFilter={toggleFilter}
               setToggleFilter={setToggleFilter}
-              styleButton={styles.buttonFlatListAll}
-              styleText={styles.buttonAll}
-            />
-            <CompatibleButton
-              type={"vegan"}
-              buttonName={"Vegan"}
-              setToggleFilter={setToggleFilter}
-              styleButton={styles.buttonFlatList}
-              styleText={styles.buttonColorGreen}
-            />
-            <CompatibleButton
-              type={"vegetarian"}
-              buttonName={"Vegetarian"}
-              setToggleFilter={setToggleFilter}
-              styleButton={styles.buttonFlatList}
-              styleText={styles.buttonColorPurple}
-            />
-            <CompatibleButton
-              type={"veg-options"}
-              buttonName={"Veg-option"}
-              setToggleFilter={setToggleFilter}
-              styleButton={styles.buttonFlatList}
-              styleText={styles.buttonColorRed}
+              styleButton={styles.buttonsFlatList}
+              styleText={styles.buttonsText}
+              styleIsActive={styles.active}
             />
           </ScrollView>
 
@@ -195,7 +168,6 @@ function HomeScreen({
         </View>
       </View>
     ) : null;
-
   const sheetRef = React.useRef(null);
   //////////////////////////^^^^^^^^^^^^^^^^^^^^^^\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   return isLoading ? (
@@ -229,7 +201,7 @@ function HomeScreen({
         // To show user's location :
       >
         {data.map((item) => {
-          type = item.type;
+          let type = item.type;
           const closest = isPointWithinRadius(
             { latitude: lat, longitude: long },
             {
@@ -322,7 +294,8 @@ function HomeScreen({
         <BottomSheet
           // ref={sheetRef}
           enabledInnerScrolling={true}
-          // enabledBottomInitialAnimation={true}
+          // enabledBottomInitialAnimation
+          // initialSnap={["50%"]}
           snapPoints={["50%", "20%", "75%"]}
           renderContent={renderContent}
         />
@@ -406,17 +379,17 @@ const styles = StyleSheet.create({
     // borderColor: "crimson",
     // borderWidth: 1,
   },
-  buttonFlatList: {
-    height: windowHeight * 0.037,
-    width: windowWidth * 0.29,
-    backgroundColor: drawerGrey,
-    borderColor: "white",
-    borderWidth: 1.1,
-    borderRadius: 20,
-    justifyContent: "center",
-    shadowColor: "white",
-  },
-  buttonFlatListAll: {
+  // buttonFlatList: {
+  //   height: windowHeight * 0.037,
+  //   width: windowWidth * 0.29,
+  //   backgroundColor: drawerGrey,
+  //   borderColor: "white",
+  //   borderWidth: 1.1,
+  //   borderRadius: 20,
+  //   justifyContent: "center",
+  //   shadowColor: "white",
+  // },
+  buttonsFlatList: {
     height: windowHeight * 0.037,
     width: windowWidth * 0.15,
     backgroundColor: drawerGrey,
@@ -426,31 +399,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     shadowColor: "white",
   },
-  buttonAll: {
+  buttonsText: {
     alignSelf: "center",
-    color: "white",
+    color: purpleFltr,
     fontWeight: "bold",
     // width: windowWidth * 0.15,
   },
-  buttonColorGreen: {
-    alignSelf: "center",
-    color: "white",
-    fontWeight: "bold",
-    color: greenFltr,
-    // borderWidth: 1,
-  },
-  buttonColorPurple: {
-    alignSelf: "center",
-    color: "white",
-    fontWeight: "bold",
-    color: purpleFltr,
-  },
-  buttonColorRed: {
-    alignSelf: "center",
-    color: "white",
-    fontWeight: "bold",
-    color: redFltr,
-  },
+  active: { backgroundColor: purpleFltr, color: "white" },
 
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|M.A.P.|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

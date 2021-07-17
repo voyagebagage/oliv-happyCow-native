@@ -37,7 +37,7 @@ class PureCompFlatlist extends React.PureComponent {
   // }
 
   render() {
-    console.log("render");
+    // console.log("render");
 
     const { item, handleColors, navigation } = this.props;
     // console.log(this.props);
