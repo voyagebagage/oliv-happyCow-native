@@ -17,36 +17,31 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import CompatibleButtonList from "../components/CompatibleButtonList";
 import FlatListContents from "../components/FlatlistContents";
 
+import { useRoute } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 // import { useNavigation } from "@react-navigation/core";
 
 import { isPointWithinRadius } from "geolib";
 
-import { type, color, handleColors } from "../components/lib";
-// let type = type;
-// let color = color;
+import { handleColors } from "../components/lib";
+
 import {
-  Button,
   Text,
   View,
-  FlatList,
   ActivityIndicator,
   Image,
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
   Platform,
   ScrollView,
 } from "react-native";
-// import {  } from "react-native";
-// import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
-import { SearchBar } from "react-native-elements";
-// import isPointWithinRadius from "geolib/es/isPointWithinRadius";
 
-// import RestaurantScreen from "./RestaurantScreen";
+import { SearchBar } from "react-native-elements";
+
 import colors from "../assets/colors";
 const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
@@ -59,27 +54,19 @@ function HomeScreen({
   limit,
   skip,
   setSkip,
-  // type,
-  // color,
-  // handleColors,
 }) {
   const [data, setData] = useState([]);
   const [flatList, setFlatList] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState("");
-  // const [typE, setTypE] = useState([]);
-  // const [limit, setLimit] = useState(25);
-  // const [skip, setSkip] = useState(0);
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [radius, setRadius] = useState(1500);
   const [render, setRender] = useState();
-  // const callbackD = useCallback(() => setData([]), [setData]);
+  // const route = useRoute();
 
   useEffect(() => {
     const abortFetch = new AbortController();
-
     const fetchData = async () => {
       try {
         console.log("fetching");
@@ -94,7 +81,7 @@ function HomeScreen({
 
           // 2 - make requests related to his location
           response = await axios.get(
-            `http://localhost:3500/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
+            `https://oliv-my-happy-cow.herokuapp.com/restaurants?name=${search}&type=${toggleFilter}&latitude=${location.coords.latitude}&longitude=${location.coords.longitude}&limit=${limit}&skip=${skip}`,
             { signal: abortFetch.signal }
           );
         } else {
@@ -106,8 +93,6 @@ function HomeScreen({
         }
         console.log("FectchCAncel got cancel");
         setData(response.data);
-        // setTypE(response.data.type);
-        // console.log(typE);
         setIsLoading(false);
 
         // console.log(response.data);
@@ -292,19 +277,14 @@ function HomeScreen({
 
       {Platform.OS === "ios" ? (
         <BottomSheet
-          // ref={sheetRef}
           enabledInnerScrolling={true}
-          // enabledBottomInitialAnimation
-          // initialSnap={["50%"]}
           snapPoints={["50%", "20%", "75%"]}
           renderContent={renderContent}
         />
       ) : (
         <BottomSheet
-          // ref={sheetRef}
           enabledInnerScrolling={true}
           snapPoints={["55%", "20%", "80%"]}
-          // enabledBottomInitialAnimation={true}
           renderContent={renderContent}
         />
       )}
@@ -341,19 +321,13 @@ const styles = StyleSheet.create({
         : Platform.OS === "ios"
         ? -windowHeight * 0.028
         : 0,
-
-    // minHeight: windowHeight * 0.2,
-    // backgroundColor: "red",
     position: "absolute",
     resizeMode: "contain",
     alignSelf: "center",
     justifyContent: "flex-start",
   },
   container: {
-    // flex: 1,
     justifyContent: "center",
-    // alignItems: "center",
-    // margin: 10,
   },
   //---------------------//////----------------------------------
   firstParentViewRenderContent: {
@@ -368,27 +342,14 @@ const styles = StyleSheet.create({
 
   scrollView: {
     height: windowHeight * 0.04,
-    // flexDirection: "row",
   },
   scrollViewContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // flex: 1,
     width: windowWidth * 1.05,
-    // borderColor: "crimson",
-    // borderWidth: 1,
   },
-  // buttonFlatList: {
-  //   height: windowHeight * 0.037,
-  //   width: windowWidth * 0.29,
-  //   backgroundColor: drawerGrey,
-  //   borderColor: "white",
-  //   borderWidth: 1.1,
-  //   borderRadius: 20,
-  //   justifyContent: "center",
-  //   shadowColor: "white",
-  // },
+
   buttonsFlatList: {
     height: windowHeight * 0.037,
     width: windowWidth * 0.15,
@@ -401,11 +362,11 @@ const styles = StyleSheet.create({
   },
   buttonsText: {
     alignSelf: "center",
-    color: purpleFltr,
     fontWeight: "bold",
-    // width: windowWidth * 0.15,
   },
-  active: { backgroundColor: purpleFltr, color: "white" },
+  active: {
+    color: "white",
+  },
 
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|M.A.P.|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -421,27 +382,21 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "transparent",
     borderRadius: 20,
-    // height: 80,
   },
   calloutPic: { height: 60, width: 60, borderRadius: 20 },
   buttonView: {
     flexDirection: "row",
     flex: 1,
-    // borderColor: "blue",
-    // borderWidth: 4,
     justifyContent: "space-between",
     height: windowHeight * 0.115,
   },
   buttonLeftView: {
-    // borderColor: "purple",
-    // borderWidth: 4,
     justifyContent: "space-evenly",
   },
   loadMore: {
     marginLeft: windowWidth * 0.007,
     justifyContent: "center",
     height: windowHeight * 0.04,
-    // borderWidth: 2,
     backgroundColor: drawerGrey,
     borderRadius: 5,
   },
@@ -449,13 +404,10 @@ const styles = StyleSheet.create({
     marginLeft: windowWidth * 0.007,
     justifyContent: "center",
     height: windowHeight * 0.04,
-    // borderWidth: 2,
     backgroundColor: "gray",
     borderRadius: 5,
   },
   buttonRightView: {
-    // borderColor: "crimson",
-    // borderWidth: 4,
     justifyContent: "space-between",
   },
   plusButton: {
@@ -464,11 +416,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: windowHeight * 0.075,
     width: windowWidth * 0.08,
-    // borderWidth: 2,
     backgroundColor: purpleFltr,
     borderRadius: 100,
-
-    // color: "white",
   },
   minusButton: {
     marginRight: windowWidth * 0.03,
@@ -476,11 +425,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: windowHeight * 0.075,
     width: windowWidth * 0.08,
-    // borderWidth: 2,
     backgroundColor: drawerGrey,
     borderRadius: 100,
-
-    // color: "white",
   },
   //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----|S_E_A_R_C_H|---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   searchBarView: {
@@ -498,7 +444,6 @@ const styles = StyleSheet.create({
     paddingVertical: windowHeight * 0.008,
     justifyContent: "center",
   },
-
   inputContainerStyle: {
     backgroundColor: "black",
     height: windowHeight * 0.038,
@@ -507,7 +452,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   inputStyle: {
-    // flex: 1,
     borderBottomColor: "white",
     borderTopColor: "white",
     paddingHorizontal: windowWidth * 0.01,

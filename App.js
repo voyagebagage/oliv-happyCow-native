@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
@@ -168,9 +169,6 @@ export default function App() {
                             limit={limit}
                             setSkip={setSkip}
                             skip={skip}
-                            // type={type}
-                            // color={color}
-                            // handleColors={handleColors}
                           />
                         )}
                       </Stack.Screen>
@@ -244,15 +242,8 @@ export default function App() {
                         {(props) => (
                           <YummiestsScreen
                             {...props}
-                            isLoading={isLoading}
-                            setIsLoading={isLoading}
                             favRestaurants={favRestaurants}
                             setFavRestaurants={setFavRestaurants}
-                            setLimit={setLimit}
-                            limit={limit}
-                            // type={type}
-                            // color={color}
-                            // handleColors={handleColors}
                           />
                         )}
                       </Stack.Screen>

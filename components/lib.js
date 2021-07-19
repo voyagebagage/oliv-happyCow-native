@@ -3,31 +3,51 @@
 export let type = "";
 export let color = "";
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
+import colors from "../assets/colors";
+const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
 export const handleColors = (type) => {
   // console.log(type);
   // let color = "";
-  if (type === "veg-options") {
-    return (color = "tomato");
+  if (type === "ALL") {
+    return (color = drawerGrey);
+  } else if (type === "veg-options") {
+    return "tomato";
   } else if (type === "vegan") {
-    return (color = "green");
+    return "green";
   } else if (type === "vegetarian") {
-    return (color = "purple");
-  } else if (type === "Veg Store") {
-    return (color = "navy");
-  } else if (type === "Ice Cream") {
-    return (color = "yellow");
-  } else if (type === "Other") {
-    return (color = "linen");
-  } else if (type === "Health Store") {
-    return (color = "white");
-  } else if (type === "Organization") {
-    return (color = "tan");
-  } else if (type === "Professional") {
-    return (color = "turquoise");
-  } else if (type === "Bakery") {
-    return (color = "wheat");
+    return "purple";
+  } else if (type === "veg-store") {
+    return "navy";
+  } else if (type === "ice-cream") {
+    return "yellow";
+  } else if (type === "other") {
+    return "linen";
+  } else if (type === "health-store") {
+    return "white";
+  } else if (type === "organization") {
+    return "tan";
+  } else if (type === "professional") {
+    return "turquoise";
+  } else if (type === "bakery") {
+    return "wheat";
   } else {
-    return (color = "blue");
+    return "blue";
   }
 };
+
+export const arrList = [
+  { type: "ALL", isActive: true },
+  { type: "vegan", isActive: true },
+  { type: "vegetarian", isActive: true },
+  { type: "veg-options", isActive: true },
+  { type: "health-store", isActive: true },
+  { type: "ice-cream", isActive: true },
+  { type: "veg-store", isActive: true },
+  { type: "bakery", isActive: true },
+  { type: "juice-bar", isActive: true },
+  { type: "B&B", isActive: true },
+  { type: "professional", isActive: true },
+  { type: "catering", isActive: true },
+  { type: "other", isActive: true },
+];

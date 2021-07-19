@@ -12,57 +12,11 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
+
 import colors from "../assets/colors";
 const { drawerGrey, lightGrey } = colors;
 
-function YummiestsScreen({
-  navigation,
-  setLimit,
-  limit,
-  isLoading,
-  setIsLoading,
-  type,
-  color,
-  handleColors,
-  favRestaurants,
-  setFavRestaurants,
-}) {
-  // const [favRestaurants, setFavRestaurants] = useState([]);
-  const [isLoadingFav, setIsLoadingFav] = useState(true);
-  // const restaurants = favRestaurants;
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const stored = await AsyncStorage.getItem("favorites");
-        const storedRes = JSON.parse(stored);
-        if (storedRes !== null) {
-          console.log("-------------------storedRes-------------------");
-          console.table(storedRes);
-
-          let newTab = [...storedRes];
-          console.log("-------------------newTab---LOAD----------------");
-          console.table(newTab);
-          // setFavRestaurants(newTab);
-          favRestaurants.push(newTab);
-          console.log(
-            "-------------------favRestaurants---LOAD----------------"
-          );
-
-          console.table(favRestaurants);
-          setIsLoadingFav(false);
-          setIsLoading(false);
-          // return restaurants.push(storedRes);
-          // alert("succes loading");
-        }
-        console.log("--------------REsss-------------", favRestaurants);
-      } catch (error) {
-        console.log("Failed to load !");
-      }
-      console.log("Done.");
-    };
-    load();
-  }, []);
-
+function YummiestsScreen({ navigation, favRestaurants, setFavRestaurants }) {
   const removeYum = async () => {
     try {
       await AsyncStorage.removeItem("oneRestaurant");
@@ -70,20 +24,20 @@ function YummiestsScreen({
       console.log("remove failed");
     }
   };
-  return !isLoadingFav ? (
+  return (
     <View style={{ backgroundColor: drawerGrey, flex: 1 }}>
-      <Text style={{ color: "white", height: 24 }}>
+      {/* <Text style={{ color: "white", height: 24 }}>
         {favRestaurants.length}
-      </Text>
+      </Text> */}
       <FlatList
-        style={{ borderWidth: 2, borderColor: "blue" }}
+        // style={{ borderWidth: 2, borderColor: "blue" }}
         data={favRestaurants}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => {
           return (
             <>
               <TouchableOpacity
-                style={styles.flatList}
+                style={[styles.flatList, { backgroundColor: item.color }]}
                 onPress={() =>
                   navigation.navigate("Restaurant", {
                     id: item.id,
@@ -91,7 +45,6 @@ function YummiestsScreen({
                     description: item.description,
                     rating: item.rating,
                     thumbnail: item.thumbnail,
-                    // color: handleColors(item.type),
                   })
                 }
               >
@@ -124,7 +77,7 @@ function YummiestsScreen({
         handleColors={handleColors}
       /> */}
     </View>
-  ) : null;
+  );
 }
 export default YummiestsScreen;
 const styles = StyleSheet.create({

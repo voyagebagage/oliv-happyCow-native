@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Text, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { type, color, handleColors } from "../components/lib";
-// import { useRoute } from "@react-navigation/native";
-// const route = useRoute();
-// let type = route.params.type;
-// const resColor = handleColors(type);
+
 function RestaurantScreen({
   navigation,
   route,
@@ -16,11 +13,6 @@ function RestaurantScreen({
   setFavRestaurants,
 }) {
   const restaurant = route.params;
-  const resColor = handleColors(route.params.type);
-  // const type = route.params.type;
-  // export let colorExp = route.params.color;
-
-  const [isLoadingFav, setIsLoadingFav] = useState(true);
 
   useEffect(() => {
     const load = async () => {
@@ -44,6 +36,7 @@ function RestaurantScreen({
 
   const clearAsyncStorage = async () => {
     await AsyncStorage.clear();
+    setFavRestaurants([]);
     console.log("clear");
   };
   const save = async (restaurant) => {
@@ -60,8 +53,6 @@ function RestaurantScreen({
         alert("nope already Fave");
       } else {
         newTab.push(restaurant);
-        // let newTab=[...favRestaurants]
-        // setFavRestaurants(newTab);
         favRestaurants.push(restaurant);
 
         const stringFav = JSON.stringify(favRestaurants);
@@ -81,16 +72,12 @@ function RestaurantScreen({
       for (let index = 0; index < newTab.length; index++) {
         if (newTab[index].id === restaurant.id) {
           alreadyInAsybcStorage = true;
-          // newTab.splice(index, 1);
           favRestaurants.splice(index, 1);
-          // setFavRestaurants([]);
         }
       }
       if (!alreadyInAsybcStorage) {
         alert("NOT in Fave");
       } else {
-        // newTab.splice(collectIndex, 1);
-        // setFavRestaurants(newTab);
         const stringFav = JSON.stringify(favRestaurants);
         await AsyncStorage.setItem("favorites", stringFav);
         alert("succes remove");
@@ -124,6 +111,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 100,
     borderWidth: 10,
-    // backgroundColor: resColor,
   },
 });

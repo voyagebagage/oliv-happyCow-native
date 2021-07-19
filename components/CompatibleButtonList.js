@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, Platform } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { TouchableOpacity as RNGTouchableOpacity } from "react-native-gesture-handler";
+import { handleColors, arrList } from "../components/lib";
 
 const CompatibleButtonList = ({
   setToggleFilter,
@@ -11,21 +12,7 @@ const CompatibleButtonList = ({
   styleIsActive,
 }) => {
   const [count, setCount] = useState(0);
-  const [list, setList] = useState([
-    { type: "ALL", isActive: true },
-    { type: "vegan", isActive: true },
-    { type: "vegetarian", isActive: true },
-    { type: "veg-options", isActive: true },
-    { type: "health-store", isActive: true },
-    { type: "ice-cream", isActive: true },
-    { type: "veg-store", isActive: true },
-    { type: "bakery", isActive: true },
-    { type: "juice-bar", isActive: true },
-    { type: "B&B", isActive: true },
-    { type: "professional", isActive: true },
-    { type: "catering", isActive: true },
-    { type: "other", isActive: true },
-  ]);
+  const [list, setList] = useState(arrList);
 
   const handleCheck = (index) => {
     let toggle = [...list];
@@ -61,11 +48,35 @@ const CompatibleButtonList = ({
         return Platform.OS === "ios" ? (
           <TouchableOpacity
             key={index}
-            style={type.isActive ? [styleButton, styleIsActive] : styleButton}
+            style={
+              type.isActive
+                ? [styleButton, { backgroundColor: handleColors(type.type) }]
+                : styleButton
+            }
             onPress={() => handleCheck(index)}
           >
             <Text
-              style={type.isActive ? [styleText, styleIsActive] : styleText}
+              style={
+                type.isActive
+                  ? [
+                      styleText,
+                      {
+                        backgroundColor: handleColors(type.type),
+                        color:
+                          handleColors(type.type) === "white" ||
+                          handleColors(type.type) === "wheat" ||
+                          handleColors(type.type) === "yellow"
+                            ? "black"
+                            : "white",
+                      },
+                    ]
+                  : [
+                      styleText,
+                      {
+                        color: handleColors(type.type),
+                      },
+                    ]
+              }
             >
               {type.type}
             </Text>
@@ -73,12 +84,18 @@ const CompatibleButtonList = ({
         ) : (
           <RNGTouchableOpacity
             key={index}
-            style={styleButton}
-            onPress={() => {
-              setToggleFilter(type);
-            }}
+            style={type.isActive ? [styleButton, styleIsActive] : styleButton}
+            onPress={() => handleCheck(index)}
           >
-            <Text style={styleText}>{buttonName}</Text>
+            <Text
+              style={
+                type.isActive
+                  ? [styleIsActive, { backgroundColor: color }]
+                  : styleText
+              }
+            >
+              {type.type}
+            </Text>
           </RNGTouchableOpacity>
         );
       })}
