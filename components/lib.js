@@ -3,14 +3,14 @@
 export let type = "";
 export let color = "";
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\\\
-import colors from "../assets/colors";
-const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
+// import colors from "../assets/colors";
+// const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
 export const handleColors = (type) => {
   // console.log(type);
   // let color = "";
   if (type === "ALL") {
-    return (color = drawerGrey);
+    return (color = "white");
   } else if (type === "veg-options") {
     return "tomato";
   } else if (type === "vegan") {
