@@ -1,14 +1,15 @@
 # happyCow-native-Replica
 
-=> One Word about Happy Cow's app: it is app that can find for you all the vegan and vegetarian solutions( restaurants) around you, and actually any restaurants <=
+=> ## One Word about Happy Cow's app: 
+it is app that can find for you all the vegan and vegetarian solutions( restaurants) around you, and actually any restaurants <=
 
 This is a project I realised on my own during my Bootcamp and keep on making it because where I am we need an app like that one where I would implement post section for "daily dish" and a system of delivery which is already organise by a friend. I have done the back end too with node.js => here
 
 So far I have implemented:
 
 - A Home Screen including:
-                         + the map in the background with a color code for different type of Restaurant + call outs
-                         + the map has a radius max, made with geolib, that display results within
+                         . the map in the background with a color code for different type of Restaurant + call outs
+                         . the map has a radius max, made with geolib, that display results within
                          - a search bar (which liks to my server/back end)
                          - I am using the reanimated bottom sheet to display some filters & results 
                          * You can cumulate search bar results and filters together like in the real app
