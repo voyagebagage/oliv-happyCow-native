@@ -49,7 +49,9 @@ const CompatibleButtonList = ({
           <TouchableOpacity
             key={index}
             style={
-              type.isActive
+              type.isActive && count < 1
+                ? styleButton
+                : type.isActive
                 ? [styleButton, { backgroundColor: handleColors(type.type) }]
                 : styleButton
             }
@@ -57,7 +59,14 @@ const CompatibleButtonList = ({
           >
             <Text
               style={
-                type.isActive
+                type.isActive && count < 1
+                  ? [
+                      styleText,
+                      {
+                        color: handleColors(type.type),
+                      },
+                    ]
+                  : type.isActive
                   ? [
                       styleText,
                       {
