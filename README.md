@@ -6,7 +6,7 @@ This is a project I realised on my own during my Bootcamp and keep on making it 
 
 So far I have implemented:
 
-- A Home Screen including :
+- A Home Screen including:
                          - the map in the background with a color code for different type of Restaurant + call outs
                          - the map has a radius max, made with geolib, that display results within
                          - a search bar (which liks to my server/back end)
@@ -15,12 +15,12 @@ So far I have implemented:
                          - The bottom sheet is on infite loading and display a sum up of each restaurant
                          - a Tab Bar including the Home screen and the Yummiests screen for favorites
 
-- A Restaurant Screen including :
+- A Restaurant Screen including:
                          - Full information of the restaurant 
                          - color coded background for each type of restaurant
                          - Favorite buttons: add, remove, clear
 
-- A Yummiests Screen including :
+- A Yummiests Screen including:
                          - All the Favorites added (Yummies) with color coded type restaurant
 
 What needs to be added:
