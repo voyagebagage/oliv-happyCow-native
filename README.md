@@ -1,8 +1,9 @@
 # happyCow-native-Replica
 by [Olivier Frugier](https://github.com/voyagebagage) 
 
-### => One word about Happy Cow's [app](https://www.happycow.net/mobile): 
-it is app that can find for you all the vegan and vegetarian solutions( restaurants) around you, and actually any restaurants.
+### => One word about Happy Cow's [app](https://www.happycow.net/mobile):                                                                                  
+it is app that can find for you all the vegan and vegetarian solutions( restaurants) around you, and actually any restaurants.                             
+
 
 This is a project I realised on my own during my Bootcamp and keep on making it because where I am we need an app like that one where I would implement post section for "daily dish" and a system of delivery which is already organise by a friend. I have done the back end too with node.js
 
