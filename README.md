@@ -7,8 +7,8 @@ This is a project I realised on my own during my Bootcamp and keep on making it 
 So far I have implemented:
 
 - A Home Screen including:
-                         - the map in the background with a color code for different type of Restaurant + call outs
-                         - the map has a radius max, made with geolib, that display results within
+- the map in the background with a color code for different type of Restaurant + call outs
+- the map has a radius max, made with geolib, that display results within
                          - a search bar (which liks to my server/back end)
                          - I am using the reanimated bottom sheet to display some filters & results 
                          - You can cumulate search bar results and filters together like in the real app
