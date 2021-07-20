@@ -4,19 +4,17 @@ by [Olivier Frugier](https://github.com/voyagebagage)
 ### => One word about Happy Cow's [app](https://www.happycow.net/mobile):                                                                                  
 it is app that can find for you all the vegan and vegetarian solutions( restaurants) around you, and actually any restaurants.                             
 
-
+--------------------------
 This is a project I realised on my own during my Bootcamp and keep on making it because where I am we need an app like that one where I would implement post section for "daily dish" and a system of delivery which is already organise by a friend. I have done the back end too with node.js
 
 [<img alt="Follow Voyage Bagage" src="https://i.imgur.com/GJgES2p.png" height="35px">](https://github.com/voyagebagage)
 [<img alt="App Repository" src="https://imgur.com/XyaL8Dg.png" height="35px">](https://github.com/voyagebagage/oliv-happyCow-native)
 [<img alt="Server Repository" src="https://imgur.com/rod7TG4.png" height="35px">](https://github.com/voyagebagage/olivDev--happy-cow--back)
 
+--------------------------
 
 
-
-
-
-<img src="https://user-images.githubusercontent.com/81431557/124770620-ad2c0900-df64-11eb-91a2-1ba72144ac66.png" align="right" min-height="40%" width="30%"/>
+<img src="https://user-images.githubusercontent.com/81431557/124770620-ad2c0900-df64-11eb-91a2-1ba72144ac66.png" align="right" min-height="40%" width="32%"/>
 
 ## So far I have implemented:
 
@@ -28,19 +26,19 @@ This is a project I realised on my own during my Bootcamp and keep on making it 
    * You can cumulate search bar results and filters together like in the real app
    * The bottom sheet is on infite loading and display a sum up of each restaurant
    * a Tab Bar including the Home screen and the Yummiests screen for favorites
-
+--------------------------
 #### - A [Restaurant Screen](https://github.com/voyagebagage/oliv-happyCow-native/blob/main/containers/RestaurantScreen.js) including:
    * Full information of the restaurant 
    * color coded background for each type of restaurant
    * Favorite buttons: add, remove, clear
-
+--------------------------
 #### - A [Yummiests Screen](https://github.com/voyagebagage/oliv-happyCow-native/blob/main/containers/Yummiests.js) including:
    * All the Favorites added (Yummies) with color coded type restaurant
 
+--------------------------
 
 
-
-
+<!-- -------------------------- -->
 
  ## What needs to be added:
    - [ ] a Filter screen to groupe all the filters in one page with a radius SLIDER
