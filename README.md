@@ -1,4 +1,4 @@
-# happyCow-native-Replica
+# happyCow React Native Replica
 by [Olivier Frugier](https://github.com/voyagebagage) 
 
 ### => One word about Happy Cow's [app](https://www.happycow.net/mobile):                                                                                  
