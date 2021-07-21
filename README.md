@@ -60,7 +60,9 @@ my home screen is the sum up of 2 screens:
 
 ### So far I have implemented:
 
-#### - first of all, everything is responsive and works on tablets also
+#### -> _first of all, everything is responsive and works on tablets also_ <-
+
+#### - A Splash Screen with a Activity indicator
 
 #### - A [Home Screen](https://github.com/voyagebagage/oliv-happyCow-native/blob/main/containers/HomeScreen.js) including:
    * The map in the background with a color code for different type of Restaurant + call outs
@@ -98,7 +100,7 @@ my home screen is the sum up of 2 screens:
   1 bis. **Memory Leak** that would occur whenever I am going back and forth in between the flatlist of my Home Screen to my Restaurant page... I have tried:
     - the latest way of unmounting component, with the abortController in Axios
     - transforming my components into class component to use _PureComponent_ and _shouldComponentUpdate()_
-at this very moment it is still laggy but I didn't get the warning since I rewrite some code and put some fonction into a lib file.
+at this very moment it is still laggy but I didn't get the warning since I rewrite some code and put some function into a lib file.
 _**However**_ I am quite confident in using the hook useIsFocused to fetch only the flatlist when I am on my Home Screen
 
 2. **TouchableOpacity** is not compatible and other incompatibility due to the _**reanimated bottom sheet**_. I ended up creating more "compatible component" and more ternary because of it
