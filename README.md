@@ -95,7 +95,7 @@ my home screen is the sum up of 2 screens:
 
 ## Biggest challenges, issues and sorted tasks by time comsumed 
 
-  1. Filtering is definetly number one, when you have finally succeded to cumulate the search bar and the type button in your back. you understand that Postman simulation is not realistic and rig it you front won't be as simple as you imagined
+  1. Filtering is definetly number one, when you have finally succeded to cumulate the search bar and the type button in your back. you understand that Postman simulation is not realistic and rig it to your front won't be as simple task.
 
   1 bis. **Memory Leak** that would occur whenever I am going back and forth in between the flatlist of my Home Screen to my Restaurant page... I have tried:
     - the latest way of unmounting component, with the abortController in Axios
