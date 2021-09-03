@@ -33,7 +33,7 @@ const CompatibleButtonList = ({
       setToggleFilter(stringyfyArrToggleFilter);
     }
 
-    if (toggle[index].type === "ALL") {
+    if (toggle[index].type === "filter") {
       toggle.forEach((elem) => (elem.isActive = true));
       setList(toggle);
       setCount(0);
@@ -93,14 +93,43 @@ const CompatibleButtonList = ({
         ) : (
           <RNGTouchableOpacity
             key={index}
-            style={type.isActive ? [styleButton, styleIsActive] : styleButton}
+            style={
+              type.isActive && count < 1
+                ? styleButton
+                : type.isActive
+                ? [styleButton, { backgroundColor: handleColors(type.type) }]
+                : styleButton
+            }
             onPress={() => handleCheck(index)}
           >
             <Text
               style={
-                type.isActive
-                  ? [styleIsActive, { backgroundColor: color }]
-                  : styleText
+                type.isActive && count < 1
+                  ? [
+                      styleText,
+                      {
+                        color: handleColors(type.type),
+                      },
+                    ]
+                  : type.isActive
+                  ? [
+                      styleText,
+                      {
+                        backgroundColor: handleColors(type.type),
+                        color:
+                          handleColors(type.type) === "white" ||
+                          handleColors(type.type) === "wheat" ||
+                          handleColors(type.type) === "yellow"
+                            ? "black"
+                            : "white",
+                      },
+                    ]
+                  : [
+                      styleText,
+                      {
+                        color: handleColors(type.type),
+                      },
+                    ]
               }
             >
               {type.type}

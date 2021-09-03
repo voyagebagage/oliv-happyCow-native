@@ -100,11 +100,17 @@ class FlatListContent extends React.PureComponent {
             data={data}
             keyExtractor={(item) => String(item.placeId)}
             renderItem={({ item }) => (
-              <PureCompFlatlist
-                item={item}
-                handleColors={handleColors}
-                navigation={navigation}
-              />
+              <>
+                {console.log(
+                  item,
+                  "item-----+++++++++++++++++++++++++++++++++++++++++++++++++---------"
+                )}
+                <PureCompFlatlist
+                  item={item}
+                  handleColors={handleColors}
+                  navigation={navigation}
+                />
+              </>
             )}
             removeClippedSubviews={true}
             maxToRenderPerBatch={20}

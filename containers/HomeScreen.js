@@ -39,6 +39,7 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
+import { ScrollView as RNGScrollView } from "react-native-gesture-handler";
 
 import { SearchBar } from "react-native-elements";
 
@@ -277,7 +278,7 @@ function HomeScreen({
 
       {Platform.OS === "ios" ? (
         <BottomSheet
-          enabledInnerScrolling={true}
+          // enabledInnerScrolling={true}
           snapPoints={["50%", "20%", "75%"]}
           renderContent={renderContent}
         />
@@ -292,6 +293,11 @@ function HomeScreen({
   );
 }
 export default React.memo(HomeScreen);
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----| |---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----| |---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----| |---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----| |---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 const styles = StyleSheet.create({
   activityIndicator: {
@@ -347,22 +353,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: windowWidth * 1.05,
+    width: windowWidth * 2.5,
   },
 
   buttonsFlatList: {
     height: windowHeight * 0.037,
-    width: windowWidth * 0.15,
+    // minWidth: windowWidth * 0.15,
     backgroundColor: drawerGrey,
     borderColor: "white",
     borderWidth: 1.1,
     borderRadius: 20,
     justifyContent: "center",
     shadowColor: "white",
+    // borderWidth: 5,
   },
   buttonsText: {
     alignSelf: "center",
     fontWeight: "bold",
+    minWidth: windowWidth * 0.15,
+    paddingHorizontal: windowWidth * 0.02,
+    // borderWidth: 5,
   },
   active: {
     color: "white",

@@ -7,9 +7,7 @@ export let color = "";
 // const { drawerGrey, greenFltr, purpleFltr, redFltr } = colors;
 
 export const handleColors = (type) => {
-  // console.log(type);
-  // let color = "";
-  if (type === "ALL") {
+  if (type === "filter") {
     return (color = "white");
   } else if (type === "veg-options") {
     return "tomato";
@@ -37,7 +35,7 @@ export const handleColors = (type) => {
 };
 
 export const arrList = [
-  { type: "ALL", isActive: true },
+  { type: "filter", isActive: true },
   { type: "vegan", isActive: true },
   { type: "vegetarian", isActive: true },
   { type: "veg-options", isActive: true },
