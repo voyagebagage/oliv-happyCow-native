@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "./containers/HomeScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
+import PhotoScreen from "./containers/PhotoScreen";
 
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
@@ -157,6 +158,26 @@ export default function App() {
                             setIsLoading={setIsLoading}
                             favRestaurants={favRestaurants}
                             setFavRestaurants={setFavRestaurants}
+                          />
+                        )}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Photos"
+                        style={{}}
+                        options={({ route }) => ({
+                          headerTransparent: false,
+                          title: " ",
+                          // headerTitleStyle: {},
+                          headerStyle: { backgroundColor: route.params.color },
+                        })}
+                      >
+                        {(props) => (
+                          <PhotoScreen
+                            {...props}
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
+                            // favRestaurants={favRestaurants}
+                            // setFavRestaurants={setFavRestaurants}
                           />
                         )}
                       </Stack.Screen>

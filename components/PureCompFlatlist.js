@@ -54,6 +54,7 @@ class PureCompFlatlist extends React.PureComponent {
               rating: item.rating,
               thumbnail: item.thumbnail,
               pics: item.pictures,
+              type: item.type,
               color: handleColors(item.type),
               address: item.address,
               fb: item.facebook,
