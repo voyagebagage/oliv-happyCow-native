@@ -174,8 +174,28 @@ export default function App() {
                         {(props) => (
                           <PhotoScreen
                             {...props}
-                            isLoading={isLoading}
-                            setIsLoading={setIsLoading}
+                            // isLoading={isLoading}
+                            // setIsLoading={setIsLoading}
+                            // favRestaurants={favRestaurants}
+                            // setFavRestaurants={setFavRestaurants}
+                          />
+                        )}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Gallery"
+                        style={{}}
+                        options={({ route }) => ({
+                          headerTransparent: false,
+                          title: " ",
+                          // headerTitleStyle: {},
+                          headerStyle: { backgroundColor: route.params.color },
+                        })}
+                      >
+                        {(props) => (
+                          <GalleryScreen
+                            {...props}
+                            // isLoading={isLoading}
+                            // setIsLoading={setIsLoading}
                             // favRestaurants={favRestaurants}
                             // setFavRestaurants={setFavRestaurants}
                           />

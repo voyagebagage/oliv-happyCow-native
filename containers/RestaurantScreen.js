@@ -11,6 +11,8 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
+import { Rating } from "react-native-ratings";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { type, color, handleColors } from "../components/lib";
 
@@ -36,6 +38,9 @@ function RestaurantScreen({
 }) {
   const restaurant = route.params;
   console.log(restaurant.pics, "RESCOLOR");
+  const ratingCompleted = (rating) => {
+    console.log("How do you rate this place: " + rating);
+  };
   useEffect(() => {
     const load = async () => {
       try {
@@ -144,11 +149,36 @@ function RestaurantScreen({
         </View>
       </View>
       <View style={[styles.headerInfo, { backgroundColor: restaurant.color }]}>
-        <View style={styles.header1stLine}>
+        <View style={styles.headerLeft}>
           <Text style={styles.restaurantName}>{restaurant.name}</Text>
+          <Rating
+            type="custom"
+            ratingColor="gold"
+            imageSize={wWidth * 0.045}
+            tintColor={restaurant.color}
+            ratingTextColor="gold"
+            ratingBackgroundColor="rgba(255,255,255,0.3)"
+            startingValue={restaurant.rating}
+            onFinishRating={ratingCompleted}
+            style={{
+              marginLeft: wWidth * 0.025,
+              marginTop: -wHeight * 0.01,
+            }}
+          />
+          <View style={styles.openingV}>
+            <Text style={styles.openingT}>
+              <MaterialCommunityIcons
+                name="clock-time-four-outline"
+                size={16}
+                color="white"
+              />
+              OPEN
+            </Text>
+          </View>
+        </View>
+        <View style={styles.headerRight}>
           <Text style={styles.restaurantName}>{restaurant.type}</Text>
         </View>
-        <Text>{restaurant.rating}</Text>
       </View>
 
       <View style={styles.callToActions}>
@@ -212,13 +242,31 @@ function RestaurantScreen({
       <View style={styles.detailV}>
         <Text style={styles.detailT}>Reviews</Text>
       </View>
-      <TouchableOpacity style={styles.detailV}>
-        <Text style={styles.detailT}>STARS</Text>
-      </TouchableOpacity>
+      <View
+        style={
+          (styles.detailV,
+          { flexDirection: "column", paddingHorizontal: wWidth * 0.225 })
+        }
+      >
+        <Text style={styles.detailT}>How do you rate this place ?</Text>
+        <Rating
+          type="custom"
+          ratingColor="gold"
+          defaultRating={0}
+          tintColor={drawerGrey} //
+          ratingTextColor="white"
+          ratingBackgroundColor="rgba(255,255,255,0.3)"
+          startingValue={0}
+          onFinishRating={ratingCompleted}
+          style={{
+            paddingVertical: 10,
+          }}
+        />
+      </View>
 
       <Button title={"add Yummies"} onPress={() => save(restaurant)} />
       <Button title={"remove Yummies"} onPress={() => removeRes()} />
-      <Button title={"CLEAR"} onPress={() => clearAsyncStorage()} />
+      {/* <Button title={"CLEAR"} onPress={() => clearAsyncStorage()} /> */}
     </ScrollView>
   ) : null;
 }
@@ -294,8 +342,28 @@ const styles = StyleSheet.create({
   headerInfo: {
     height: wHeight * 0.11,
     width: wWidth,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  header1stLine: { flexDirection: "row", justifyContent: "space-between" },
+  headerLeft: { alignItems: "flex-start" },
+  headerRight: {},
+  openingV: {
+    borderWidth: 1,
+    borderColor: "white",
+    borderRadius: 15,
+
+    marginLeft: wWidth * 0.03,
+    marginTop: wHeight * 0.006,
+    // justifyContent: "space-between",
+  },
+  openingT: {
+    color: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    width: wWidth * 0.18,
+
+    justifyContent: "space-between",
+  },
   onTopTextPhoto: {
     position: "absolute",
     color: "white",
@@ -356,7 +424,8 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   mainView: {
-    color: "white",
+    // color: "white",
     fontWeight: "bold",
+    backgroundColor: drawerGrey,
   },
 });

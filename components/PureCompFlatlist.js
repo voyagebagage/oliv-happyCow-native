@@ -2,6 +2,8 @@ import React, { PureComponent } from "react";
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+import colors from ".././assets/colors";
+const { drawerGrey } = colors;
 import {
   TouchableOpacity,
   Text,
@@ -12,6 +14,8 @@ import {
   // ActivityIndicator,
 } from "react-native";
 // import { FixedSizeList as List } from 'react-window';
+import { Rating } from "react-native-ratings";
+import { handleColors } from "./lib";
 
 class PureCompFlatlist extends React.PureComponent {
   constructor() {
@@ -77,13 +81,40 @@ class PureCompFlatlist extends React.PureComponent {
         <Image style={styles.flatListPic} source={{ uri: item.thumbnail }} />
         <View style={styles.flatListContent}>
           <View style={styles.flatListNameType}>
-            <Text style={styles.flatListText}>{item.name}</Text>
-            <Text style={styles.flatListText}>{item.type}</Text>
+            <View style={styles.flatListName}>
+              <Text style={styles.flatListText}>{item.name}</Text>
+              <Rating
+                type="star"
+                // imageRating="star"
+                ratingColor="gold"
+                imageSize={windowWidth * 0.045}
+                tintColor={drawerGrey}
+                ratingTextColor="gold"
+                ratingBackgroundColor="rgba(255,255,255,0.3)"
+                startingValue={item.rating}
+                // onFinishRating={ratingCompleted}
+                style={{
+                  marginTop: windowHeight * 0.01,
+                }}
+              />
+            </View>
+
+            <View
+              style={[
+                styles.flatListType,
+                {
+                  backgroundColor: handleColors(item.type),
+                },
+              ]}
+            >
+              {/* <Text style={styles.flatListText}>{item.type}</Text> */}
+            </View>
           </View>
-          <Text style={styles.flatListText}>{item.rating}</Text>
-          <Text style={styles.flatListText} numberOfLines={2}>
-            {item.description}
-          </Text>
+          <View style={styles.descriptionV}>
+            <Text style={styles.flatListText} numberOfLines={2}>
+              {item.description}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -110,14 +141,33 @@ const styles = StyleSheet.create({
   flatListContent: {
     flex: 1,
     justifyContent: "space-between",
-
     paddingLeft: windowWidth * 0.02,
     marginTop: windowWidth * 0.02,
+    // flexDirection: "row",
+  },
+  flatListName: {
+    // borderWidth: 5,
+    // flexDirection: "column",
+    // justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   flatListNameType: {
     flexDirection: "row",
     justifyContent: "space-between",
+    // borderWidth: 2,
   },
+  // flatListName: { borderWidth: 3 },
+  flatListType: {
+    flexDirection: "column",
+    borderWidth: 1.5,
+    borderColor: "white",
+    borderRadius: 50,
+    width: windowWidth * 0.065,
+    height: windowHeight * 0.03,
+    // color: handleColors(item.type),
+    // height: windowHeight * 0.02,
+  },
+  descriptionV: {},
   flatListText: {
     color: "lightgray",
     // textAlign: "left",
